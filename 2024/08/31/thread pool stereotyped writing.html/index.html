@@ -1,0 +1,477 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="bbkkp"><meta name="copyright" content="bbkkp"><meta name="generator" content="Hexo 7.3.0"><meta name="theme" content="hexo-theme-yun"><title>线程池 | bbkkpの折腾日记</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.4.1/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"bbkkp.github.io","root":"/","title":"踏着梦走过时光","version":"1.10.11","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"fireworks":{"colors":null},"vendors":{"host":"https://fastly.jsdelivr.net/npm/","darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><meta name="description" content="线程池支持的模式PoolMode枚举类型 enum class是限定作用域枚举类型，枚举成员的作用域限定在枚举类型所声明的作用域中    12345enum class PoolMode&#123;	MODE_FIXED,  &#x2F;&#x2F; 固定数量的线程	MODE_CACHED, &#x2F;&#x2F; 线程数量可动态增长&#125;;   ThreadPool线程池类型 任务队列不可以用裸指针，我们无法确定用户传进来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池">
+<meta property="og:url" content="https://bbkkp.github.io/2024/08/31/thread%20pool%20stereotyped%20writing.html/index.html">
+<meta property="og:site_name" content="bbkkpの折腾日记">
+<meta property="og:description" content="线程池支持的模式PoolMode枚举类型 enum class是限定作用域枚举类型，枚举成员的作用域限定在枚举类型所声明的作用域中    12345enum class PoolMode&#123;	MODE_FIXED,  &#x2F;&#x2F; 固定数量的线程	MODE_CACHED, &#x2F;&#x2F; 线程数量可动态增长&#125;;   ThreadPool线程池类型 任务队列不可以用裸指针，我们无法确定用户传进来">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.picui.cn/free/2024/06/27/667cf9eba08e3.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648af79f1ddac507cc124db9.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648b26821ddac507cc9ee79b.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc1161ddac507cc62196c.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc2b61ddac507cc65dde3.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc85a1ddac507cc742ccc.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc8681ddac507cc744a43.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc8741ddac507cc7465cb.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc87b1ddac507cc74745e.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc8841ddac507cc748701.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bc8841ddac507cc748701.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bcad31ddac507cc79ef4f.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bcba71ddac507cc7c0edb.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bcbb41ddac507cc7c2609.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bcbb41ddac507cc7c2609.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648bcd411ddac507cc7f5311.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648c67401ddac507cc261fec.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/648ec8a71ddac507cca0bf3b.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/64939bd01ddac507cc19d9bb.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/64939ea91ddac507cc1d5a85.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/64939eb81ddac507cc1d6eec.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/6493f2611ddac507cc9823af.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/6493f6401ddac507cc9e3df3.png">
+<meta property="article:published_time" content="2024-08-31T14:14:56.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:16:47.078Z">
+<meta property="article:author" content="bbkkp">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="thread">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/06/27/667cf9eba08e3.png"><script>(function() {
+  if (CONFIG.mode !== 'auto') return
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="bbkkp"><img width="96" loading="lazy" src="/images/head.jpg" alt="bbkkp"><span class="site-author-status" title="四季花开">☺️</span></a><div class="site-author-name"><a href="/about/">bbkkp</a></div><span class="site-name">bbkkpの折腾日记</span><sub class="site-subtitle">一个人的世界</sub><div class="site-description">踏着梦走过时光</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">55</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">13</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">39</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/bbkkp" title="GitHub" target="_blank" style="color:#181717"><span class="icon iconify" data-icon="ri:github-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="2094921157@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><span class="icon iconify" data-icon="ri:mail-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/" title="知乎" target="_blank" style="color:#0084FF"><span class="icon iconify" data-icon="ri:zhihu-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><span class="icon iconify" data-icon="ri:bilibili-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" target="_blank" rel="noopener" href="https://github.com/bbkkp" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E4%B9%8Bgdb%E8%B0%83%E8%AF%95"><span class="toc-number">1.</span> <span class="toc-text">&#x3D;&#x3D;Linux多线程死锁问题之gdb调试&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E4%B9%8Bwindbg%E8%B0%83%E8%AF%95b%E7%AB%99dvlinker"><span class="toc-number">2.</span> <span class="toc-text">&#x3D;&#x3D;Windows死锁问题之windbg调试b站dvlinker*&#x3D;&#x3D;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gdb%E6%89%A9%E5%B1%95"><span class="toc-number">2.0.1.</span> <span class="toc-text">gdb扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E9%A1%B9%E7%9B%AE%E7%BC%96%E8%AF%91%E6%88%90%E5%8A%A8%E6%80%81%E5%BA%93"><span class="toc-number">2.0.2.</span> <span class="toc-text">将项目编译成动态库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8linux%E4%B8%8A%E8%BF%90%E8%A1%8C%E6%97%B6%E5%87%BA%E7%8E%B0%E8%87%B4%E5%91%BD%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98"><span class="toc-number">2.1.</span> <span class="toc-text">&#x3D;&#x3D;在linux上运行时出现致命的死锁问题&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">&#x3D;&#x3D;解决方法&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84"><span class="toc-number">2.3.</span> <span class="toc-text">&#x3D;&#x3D;项目重构&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%AF%E5%8F%98%E5%8F%82%E6%A8%A1%E6%9D%BF%E5%92%8Cfuture%E6%9C%BA%E5%88%B6%E6%9D%A5%E6%94%B9%E9%80%A0%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.4.</span> <span class="toc-text">&#x3D;&#x3D;使用可变参模板和future机制来改造项目&#x3D;&#x3D;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">&#x3D;&#x3D;前置知识点&#x3D;&#x3D;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%95%E7%94%A8%E6%8A%98%E5%8F%A0%E5%92%8C%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91"><span class="toc-number">3.0.1.</span> <span class="toc-text">&#x3D;&#x3D;1.引用折叠和完美转发&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%A8%A1%E6%9D%BF"><span class="toc-number">3.0.2.</span> <span class="toc-text">&#x3D;&#x3D;2.可变参模板&#x3D;&#x3D;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E5%A6%82%E4%BD%95%E5%B1%95%E5%BC%80%E5%8F%82%E6%95%B0%E5%8C%85"><span class="toc-number">3.0.2.1.</span> <span class="toc-text">&#x3D;&#x3D;可变参函数模板如何展开参数包&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E7%B1%BB%E6%A8%A1%E6%9D%BF%E5%A6%82%E4%BD%95%E5%B1%95%E5%BC%80%E5%8F%82%E6%95%B0%E5%8C%85"><span class="toc-number">3.0.2.2.</span> <span class="toc-text">&#x3D;&#x3D;可变参类模板如何展开参数包&#x3D;&#x3D;</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-auto%E4%B8%8Edeltype%E7%B1%BB%E5%9E%8B%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="toc-number">3.0.3.</span> <span class="toc-text">&#x3D;&#x3D;3.auto与deltype类型说明符&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#const"><span class="toc-number">3.0.4.</span> <span class="toc-text">&#x3D;&#x3D;const&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto-%E6%A0%B9%E6%8D%AE%E5%88%9D%E5%A7%8B%E5%8C%96%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8E%A8%E5%AF%BC%E5%8F%98%E9%87%8F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.0.5.</span> <span class="toc-text">auto 根据初始化表达式推导变量的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#decltype%E8%BF%94%E5%9B%9E-%E6%93%8D%E4%BD%9C%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.0.6.</span> <span class="toc-text">decltype返回()操作数的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto%E4%B8%8Edecltype%E7%9A%84%E7%BB%BC%E5%90%88%E5%BA%94%E7%94%A8"><span class="toc-number">3.0.7.</span> <span class="toc-text">auto与decltype的综合应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-future%E5%92%8Cpackaged-task%E5%92%8Cpromise%E5%92%8Casync"><span class="toc-number">3.1.</span> <span class="toc-text">&#x3D;&#x3D;4.future和packaged_task和promise和async&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-thread%E7%9A%84%E5%8F%82%E6%95%B0%E5%A6%82%E6%9E%9C%E6%98%AF%E5%BC%95%E7%94%A8%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E4%BC%A0%EF%BC%8C%E8%80%8C%E8%A6%81%E9%80%9A%E8%BF%87std-ref-%E4%BF%AE%E9%A5%B0"><span class="toc-number">3.2.</span> <span class="toc-text">&#x3D;&#x3D;5.thread的参数如果是引用为什么不能直接传，而要通过std::ref()修饰&#x3D;&#x3D;</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="https://bbkkp.github.io/2024/08/31/thread%20pool%20stereotyped%20writing.html/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="bbkkp"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="bbkkpの折腾日记"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">线程池</h1><div class="post-meta"><div class="post-time"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2024-08-31 22:14:56" itemprop="dateCreated datePublished" datetime="2024-08-31T22:14:56+08:00">2024-08-31</time></div><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%85%AB%E8%82%A1%E6%96%87/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">八股文</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/c/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">c++</span></a><a class="tag-item" href="/tags/thread/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">thread</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><p><img src="https://img.picui.cn/free/2024/06/27/667cf9eba08e3.png" loading="lazy"></p>
+<ul>
+<li><strong>线程池支持的模式PoolMode枚举类型</strong><ul>
+<li>enum class是限定作用域枚举类型，枚举成员的作用域限定在枚举类型所声明的作用域中</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="keyword">class</span> <span class="title">PoolMode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	MODE_FIXED,  <span class="comment">// 固定数量的线程</span></span><br><span class="line">	MODE_CACHED, <span class="comment">// 线程数量可动态增长</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>ThreadPool线程池类型</strong><ul>
+<li>任务队列不可以用裸指针，我们无法确定用户传进来的任务生命周期，用户只关心任务的run()是否执行，我们还要确保run()的过程中任务对象会不会突然消失，所以用一个智能指针来管理指向任务的指针</li>
+</ul>
+</li>
+<li><strong>ThreadPool线程池类型</strong><ul>
+<li>线程列表和任务队列的部分所属变量属性在多线程环境下会出现竞态条件，必须线程互斥，不用互斥锁，太大了，原子变量即可，CAS无锁设计。</li>
+</ul>
+</li>
+<li><strong>ThreadPool线程池类型</strong><ul>
+<li>任务队列在生产者-消费者模型中需要保持线程安全，通过互斥锁和条件和条件变量实现线程通信。</li>
+</ul>
+</li>
+<li><strong>ThreadPool线程池类型</strong><ul>
+<li>禁止拷贝构造和拷贝赋值</li>
+</ul>
+</li>
+<li><strong>ThreadPool线程池类型</strong><ul>
+<li>在ThreadPool的start()中创建Thread对象，绑定线程函数，方便访问变量，然后统一启动</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">threads_[i]-&gt;start()</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="type">int</span>,<span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;Thread&gt;&gt; threads_</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Thread线程类型</strong><ul>
+<li>在构造函数中接收线程函数，在start()中创建真正的程，并设置线程分离，防止出了start()函数线程对象释放带着没执行完的线程函数一起结束了</li>
+</ul>
+</li>
+<li><strong>ThreadPool–submitTask()</strong><ul>
+<li>先获得任务队列上上的锁，notFull条件变量不能等待超过一秒，要符合lambda函数的条件,每次条件变量被notify时会检测一次是否符合条件[wait_for],添加任务到任务队列，增加任务数量，notEmpty条件变量[notify_all]</li>
+</ul>
+</li>
+<li><strong>ThreadPool–threadFunc()多线程取任务并执行</strong><ul>
+<li>锁只锁住取出任务的过程，维护任务队列的线程安全。先获得锁，notEmpty条件变量，符合lambda函数条件，不符合就一直等。取出任务，减少任务数量。两个条件变量更灵活，如果还有任务先notify条件变量notEmpty让其他可能等待线程也可以执行，再notify条件变量notFull，最后执行任务的run()，此时已经出了锁的范围。</li>
+</ul>
+</li>
+<li><strong>任务队列储存的是一个任务对象类型抽象类指针，传入的任务对象是一个继承抽象类的任务实例，重写其中的run(),run()方法里面就是需要执行的任务。由此解决任务队列可以存储任何任务的要求</strong></li>
+<li><strong>如何接受线程池中线程执行完任务后可能是任意类型的返回值</strong><ul>
+<li>模板不可以，run()本身是虚函数，返回类型是模板，错误。编译器在编译阶段会实例化所有模板，即将T转换成对应的类型，但是在编译阶段编译器根本不知道基类指针到底指向哪一个子类，只是运行时才知道的事情。所以不可以一起用</li>
+<li><strong>c++17 Any上帝类 接收任何数据类型的类型</strong>Any类的private就是一个基类，里面只有一个虚析构函数，一个继承自基类的派生类，返回值就存储在里面，用模板接受,一个基类的指针，返回的时候Any类隐式构造，创建一个指向派生类的基类。</li>
+<li><strong>如何取出派生类里面返回值</strong> 我们在确定基类指针确定指向派生类时强转取值</li>
+</ul>
+</li>
+<li><strong>这里有一个细节问题就是Any()类禁止了拷贝构造和拷贝赋值，使用移动构造和移动赋值，为什么函数返回值构造Any对象的时候不报错</strong><br><strong>这里还是有一些问题</strong></li>
+</ul>
+<blockquote>
+<p>c++类中6中函数。由于声明一种可能影响另一种是否生成，所以用default.一般四种，下三种显示声明任意一个，移动不生成，移动自己一种，另一种不生成</p>
+</blockquote>
+<blockquote>
+<p>无参构造，有参构造，拷贝构造【初始化】，拷贝赋值【赋值】移动构造【初始化】移动赋值【赋值】</p>
+</blockquote>
+<blockquote>
+<p><strong>run()应该报错，因为没有拷贝拷贝构造，但是RVO优化，此时别说拷贝构造，什么也没发生。不抛出异常，不多个返回点都优化。这里不一定，编译器优化不知道发生了什么</strong></p>
+</blockquote>
+<ul>
+<li><strong>为什么Any的声明和定义都在.h文件</strong></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lijiayu2015/article/details/52650790">https://blog.csdn.net/lijiayu2015/article/details/52650790</a></p>
+</blockquote>
+<ul>
+<li><strong>c++20Semaphore底层就是条件变量和互斥锁，只是多了计数</strong><ul>
+<li>任务队列的生产者和消费者的线程通信用互斥锁和条件变量来解决，线程执行任务返回结果和用户提取结果的线程通信用信号量来解决</li>
+<li>post().wait()非常简单</li>
+</ul>
+</li>
+<li><strong>Result的设计</strong><ul>
+<li>我们通过Any上帝类解决了如何接收任务的run()函数返回任意数据类型的值的问题，此时线程处理问题的结果存储在Any上帝类中的一个指向派生类的由unique_ptr管理的基类指针上，也就是在线程池中任务队列的任务中。我们如何把这个Any传递给遥远的用户调用的submitTask.<br>*注意，他们之间联系就是任务本身<ul>
+<li>我们可以在task中将Any封装成Result，变成一个成员变量，用一个方法返回。在submitTask中调用这个方法得到Result,通过Result的方法的到Any对象，调用cast_&lt;&gt;()的到run()返回值。<strong>但是</strong>这里有一个问题，这个返回的Result对象完全依托任务队列中的task存在，可是线程在执行完任务后会让任务出队列，任务消失。我们此时在调用Result对象就会出现问题</li>
+<li>通过task，创建一个独立的Result对象才是这个项目中的正解。在task中创建一个Result指针,注意必须是裸指针，千万不要shared_ptr，不然循环引用。Result中调用task的方法设置这个裸指针，然后用一个函数封装一下run(),之后就执行这个函数，在里面多调用一个Result对象设置自己Any对象的方法，task的run()执行完，Result得到返回值,task出队列，但是RResult里面有个强智能指针指向它，不会释放。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>通过一个与原子布尔值isPoolRunning_【线程池的运行状态，默认false,stat()置true】来防止用户没有在线程启动之前设置运行模式。以及为之后的资源释放做准备</strong></li>
+<li><strong>idleThreadSize记录空闲线程数量，初始0.每次线程对象start()时加一，回收线程减一，过了notEmpty条件变量也减一，执行完任务+1</strong></li>
+<li><strong>在submitTask()中处理cached模式下的逻辑，剩余任务数量是否大于空闲线程数量且当前线程数量小于线程阈值。创建线程对象，绑定线程函数，加入线程列表，启动线程，修改线程相关变量</strong></li>
+<li><strong>threadFunc()下也要处理cached模式下的逻辑，线程在notEmpty条件变量上是因为超时时间返回，空闲时间大于空闲时间阈值且线程数量大于初始线程数量。回收线程，return即可，线程函数结束线程结束，从线程列表中取出，当初的vector无法取出，用unordered_map取出，key是一个静态的递增id.这个id只是方便在map中找到线程对象，真的线程id调用get_id()方法，修改相关线程变量</strong></li>
+</ul>
+<blockquote>
+<p>&#x3D;&#x3D;死锁情况分析&#x3D;&#x3D;</p>
+</blockquote>
+<p><img src="https://pic.imgdb.cn/item/648af79f1ddac507cc124db9.png" loading="lazy"><br>&#x3D;&#x3D;线程回收的代码逻辑在线程池的析构函数和线程函数threadFunc()中，线程池对象在回收之前必须等待线程资源全部回收，即线程的函数都要执行完，要么直接return，要么跳出线程函数中的最大的while(isPoolRunning)循环，最终都是线程函数结束，线程结束，更新线程列表以及exitCond_.notify_all()，线程列表长度0线程池对象才能回收&#x3D;&#x3D;<br><strong>具体的说</strong><br>&#x3D;&#x3D;当线程池对象释放时，在线程池的析构函数中，先置原子布尔值isPollRunning为false,这是为了正在执行任务的线程在任务执行完成后再一次面对while(isPoolRunning)循环时不在进入循环，然后这个线程更新线程列表以及exitCond_.notify_all(),这个线程结束线程函数，释放，线程池对象在条件变量上从等待到阻塞，在获得锁之后判断线程列表是否为空。还有notEmpty_.notity_all(),无论是cached还是fixed模式下等待在条件变量上的线程，从等待到阻塞，获得锁，往下走,进入if(!isPollRunning)中，和上面一样的事情，只是return结束线程函数&#x3D;&#x3D;<br><strong>但是，还有一种线程情况没有考虑，这导致程序可能会出现不确定的死锁，即线程处于进入while循环但是还没有在条件变量上等待且在会进入第二层循环[没有任务，有的话不进入第二层循环就去执行任务了，那就是第二种线程情况了]的情况，注意我们这里线程情况是指析构函数开始执行时的线程情况且不能是cached模式，这个模式的线程池线程不会一直等待在notEmpty_条件变量上，会超时判断</strong></p>
+<ul>
+<li>&#x3D;&#x3D;第一种可能&#x3D;&#x3D;用户线程先获得锁，在条件变量exitCond_上等待，释放锁。线程池线程获得锁，在notEmpty_条件变量上等待，释放锁，前者等待线程池线程结束时唤醒，后者等待用户线程结束时唤醒，但是用户线程在等待之前就唤醒了，&#x3D;&#x3D;死锁成立&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;第二种可能&#x3D;&#x3D;线程池线程先获得锁，在notEmpty_条件变量上等待，释放锁，加入在这之前用户线程已经notity了条件变量notEmpty_，目前正在等待获取锁，那么此时获取锁，然后在条件变量exitCond_上等待，释放锁。&#x3D;&#x3D;死锁成立&#x3D;&#x3D;<ul>
+<li>&#x3D;&#x3D;解决第一种死锁的方法&#x3D;&#x3D;<strong>锁+双重判断</strong>我们在第一循环中已经判断线程池状态，我们在后获得锁后面对第二层循环再次判断线程池状态，不进入循环，变成第二种线程情况。此时我们干脆让取消第二层循环中的if(!isPollRunning)代码，改为在第二循环外面，执行任务代码之前加一个if(!isPollRunning){break;}。使三种线程情况的线程释放代码合并&#x3D;&#x3D;死锁解决&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;解决第二种死锁方法&#x3D;&#x3D;*让用户线程在获得锁后再notity条件变量notEmpty_&#x3D;&#x3D;死锁解决&#x3D;&#x3D;</li>
+</ul>
+</li>
+</ul>
+<h1 id="Linux多线程死锁问题之gdb调试"><a href="#Linux多线程死锁问题之gdb调试" class="headerlink" title="&#x3D;&#x3D;Linux多线程死锁问题之gdb调试&#x3D;&#x3D;"></a>&#x3D;&#x3D;Linux多线程死锁问题之gdb调试&#x3D;&#x3D;</h1><ul>
+<li><strong>示例程序</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>           <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span>             <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span>              <span class="comment">// std::mutex, std::unique_lock</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span> <span class="comment">// std::condition_variable</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁资源1</span></span><br><span class="line"><span class="built_in">std</span>::mutex mtx1;</span><br><span class="line"><span class="comment">// 锁资源2</span></span><br><span class="line"><span class="built_in">std</span>::mutex mtx2;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程A的函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">taskA</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    	<span class="comment">// 保证线程A先获取锁1</span></span><br><span class="line">    	<span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; <span class="title function_">lockA</span><span class="params">(mtx1)</span>;</span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程A获取锁1&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// 线程A睡眠2s再获取锁2，保证锁2先被线程B获取，模拟死锁问题的发生</span></span><br><span class="line">    	<span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">2</span>));</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// 线程A先获取锁2</span></span><br><span class="line">    	<span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; <span class="title function_">lockB</span><span class="params">(mtx2)</span>;</span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程A获取锁2&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程A释放所有锁资源，结束运行！&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程B的函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">taskB</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    	<span class="comment">// 线程B先睡眠1s保证线程A先获取锁1</span></span><br><span class="line">    	<span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">    	<span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; <span class="title function_">lockB</span><span class="params">(mtx2)</span>;</span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程B获取锁2&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// 线程B尝试获取锁1</span></span><br><span class="line">    	<span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; <span class="title function_">lockA</span><span class="params">(mtx1)</span>;</span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程B获取锁1&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;线程B释放所有锁资源，结束运行！&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 创建生产者和消费者线程</span></span><br><span class="line">	<span class="built_in">std</span>::thread <span class="title function_">t1</span><span class="params">(taskA)</span>;</span><br><span class="line">	<span class="built_in">std</span>::thread <span class="title function_">t2</span><span class="params">(taskB)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// main主线程等待所有子线程执行完</span></span><br><span class="line">	t1.join();</span><br><span class="line">	t2.join();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行结果<br><img src="https://pic.imgdb.cn/item/648b26821ddac507cc9ee79b.png" loading="lazy"></li>
+<li>虚拟机太垃圾，更换腾讯云服务器</li>
+<li>ps命令查看一个进程的PID和运行状态<br><img src="https://pic.imgdb.cn/item/648bc1161ddac507cc62196c.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>Sl+：一个在前台运行正在等待某事件发生的多线程程序</p>
+</blockquote>
+<ul>
+<li>top命令查看进程中线程的具体状态<br><img src="https://pic.imgdb.cn/item/648bc2b61ddac507cc65dde3.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>三个线程全部处于阻塞状态[S],且cpu占有率都是0.0,则排除死循环问题。要么是由于没有IO网络事件使线程阻塞，比如说muduo中baseloop和subloop全部阻塞在IO多路复用上。要么是发生了死锁问题。</p>
+</blockquote>
+<ul>
+<li>gdb&#x3D;&#x3D;远程调试&#x3D;&#x3D;正在运行的程序，打印进程中每一个线程的调用堆栈信息<br><img src="https://pic.imgdb.cn/item/648bc85a1ddac507cc742ccc.png" loading="lazy"><br><img src="https://pic.imgdb.cn/item/648bc8681ddac507cc744a43.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>Thread3即tasB线程，从下往上看，最后阻塞在wait上</p>
+</blockquote>
+<p><img src="https://pic.imgdb.cn/item/648bc8741ddac507cc7465cb.png" loading="lazy"></p>
+<blockquote>
+<p>Thread2即tasA线程，从下往上看，最后阻塞在wait上</p>
+</blockquote>
+<p><img src="https://pic.imgdb.cn/item/648bc87b1ddac507cc74745e.png" loading="lazy"></p>
+<blockquote>
+<p>main线程最后阻塞在join上</p>
+</blockquote>
+<p><img src="https://pic.imgdb.cn/item/648bc8841ddac507cc748701.png" loading="lazy"></p>
+<ul>
+<li>&#x3D;&#x3D;在源码中直接定位问题代码&#x3D;&#x3D;</li>
+<li>重新编译与运行<br><img src="https://pic.imgdb.cn/item/648bc8841ddac507cc748701.png" loading="lazy"></li>
+<li>查看进程<br><img src="https://pic.imgdb.cn/item/648bcad31ddac507cc79ef4f.png" loading="lazy"></li>
+<li>gdb调试该进程并查看当前所有线程<br><img src="https://pic.imgdb.cn/item/648bcba71ddac507cc7c0edb.png" loading="lazy"><br><img src="https://pic.imgdb.cn/item/648bcbb41ddac507cc7c2609.png" loading="lazy"></li>
+<li>切换到thread 2[taskA],调用堆栈信息<br><img src="https://pic.imgdb.cn/item/648bcbb41ddac507cc7c2609.png" loading="lazy"><br><img src="https://pic.imgdb.cn/item/648bcd411ddac507cc7f5311.png" loading="lazy"><ul>
+<li>&#x3D;&#x3D;查看第5帧调用信息，发现问题代码&#x3D;&#x3D;</li>
+</ul>
+</li>
+</ul>
+<h1 id="Windows死锁问题之windbg调试b站dvlinker"><a href="#Windows死锁问题之windbg调试b站dvlinker" class="headerlink" title="&#x3D;&#x3D;Windows死锁问题之windbg调试b站dvlinker*&#x3D;&#x3D;"></a>&#x3D;&#x3D;Windows死锁问题之windbg调试b站dvlinker*&#x3D;&#x3D;</h1><h3 id="gdb扩展"><a href="#gdb扩展" class="headerlink" title="gdb扩展"></a>gdb扩展</h3><ul>
+<li>常用命令</li>
+</ul>
+<blockquote>
+<p>b break 下断点<br>r run 运行程序，直到遇断点停止<br>n next 运行本行代码，遇到函数不会进入内部<br>s step 遇到函数会进入内部<br>p print 输出变量的值<br>c continue继续运行程序，遇到断点停止<br>q quit退出gdb<br>set var xx&#x3D;xx 设置变量的值<br>set args xx.cc&#x2F;xx&#x2F;xx 设置传入程序的参数,参数包含特殊字符要用双引号包含<br>list 查看源代码<br>info br 查看有哪些断点<br>clear xx删除某一行代码或某个函数的所有断点<br>delete xx删除某一个断点或者全部断点</p>
+</blockquote>
+<h3 id="将项目编译成动态库"><a href="#将项目编译成动态库" class="headerlink" title="将项目编译成动态库"></a>将项目编译成动态库</h3><ul>
+<li>&#x3D;&#x3D;文件无法上传，chown 777 xxx 修改创建的项目文件夹权限&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;xftp显示的文件名乱码，修改属性编码为UTF-8&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;上传文件中中文乱码，在windows上修改文件编码UTF-8&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;xshell输出有乱码，修改日志属性UTF-8&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;是什么不重要，重要的是统一&#x3D;&#x3D;</li>
+<li>编译动态库<br><img src="https://pic.imgdb.cn/item/648c67401ddac507cc261fec.png" loading="lazy"><ul>
+<li>&#x3D;&#x3D;linux下和windows下库不一样，包含一下#include&lt;thread&gt;&#x3D;&#x3D;</li>
+</ul>
+</li>
+<li>编译测试文件tTest.cpp<ul>
+<li>动态库文件libtpool.so放到&#x2F;usr&#x2F;local&#x2F;lib&#x2F;下</li>
+<li>threadpool.h文件放到&#x2F;usr&#x2F;local&#x2F;include&#x2F;xia</li>
+<li>g++ tTeat.cpp -ltpool -lpthread -std&#x3D;c++17</li>
+</ul>
+</li>
+<li>运行a.out文件出现问题，找不到动态库文件<ul>
+<li>&#x3D;&#x3D;编译时找动态库的地方和运行时找动态库的地方不一样&#x3D;&#x3D;</li>
+<li>&#x3D;&#x3D;g++会去访问&#x2F;etc&#x2F;文件夹下的ld.so.conf文件，其中包括同级目录下的ld.so.conf.d文件下的所有*.conf文件，我们在其中创建一个mylib.conf文件，写入&#x2F;usr&#x2F;local&#x2F;lib&#x2F;即可。&#x3D;&#x3D;</li>
+</ul>
+</li>
+</ul>
+<h2 id="在linux上运行时出现致命的死锁问题"><a href="#在linux上运行时出现致命的死锁问题" class="headerlink" title="&#x3D;&#x3D;在linux上运行时出现致命的死锁问题&#x3D;&#x3D;"></a>&#x3D;&#x3D;在linux上运行时出现致命的死锁问题&#x3D;&#x3D;</h2><ul>
+<li>gdb远程监控阻塞的进程，查看所有线程的情况，所有线程全部死锁。主线程死锁在析构函数的条件变量上，线程池线程全部死锁，没有人notity它，线程列表又不是0，自然在这等待着，死锁，这个可以理解。问题在于线程池线程竟然死锁在了我自己实现的一个信号量上的post函数中的一个条件变量notity上。</li>
+<li>不仅线程池会析构，result【submitTask中返回的result】对象也会析构，默认析构，成员变量析构，Semaphore变量析构，默认析构，成员变量析构，条件变量析构。在vs上条件变量的析构会释放资源，所以运行到这个条件变量notity也不会有未知的行为，资源释放了就什么都不做，线程依旧运行，反正线程此时不取result的值，也不会到运行到Semaphore对象的wait()中，不会死锁在那【取的话这个线程池线程也不会死锁，因为用户线程会阻塞在get上，不会像不取一样资源对释放了的条件变量notity】完美。但是在linux中条件变量的析构函数什么也不做，导致这个条件变量状态失效，又在这个未知状态条件变量上notitty,就无故阻塞了。&#x3D;&#x3D;此时死锁成立&#x3D;&#x3D;</li>
+</ul>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="&#x3D;&#x3D;解决方法&#x3D;&#x3D;"></a>&#x3D;&#x3D;解决方法&#x3D;&#x3D;</h2><ul>
+<li>&#x3D;&#x3D;治标&#x3D;&#x3D;每个submitTask返回的result都get()cast_&lt;&gt;一下</li>
+<li>&#x3D;&#x3D;治本&#x3D;&#x3D;Semaphore析构函数不默认，反转一个布尔值。post()函数中如果条件变脸析构了就直接return，什么都不做，间接达到和vs下一样的效果</li>
+</ul>
+<h2 id="项目重构"><a href="#项目重构" class="headerlink" title="&#x3D;&#x3D;项目重构&#x3D;&#x3D;"></a>&#x3D;&#x3D;项目重构&#x3D;&#x3D;</h2><ul>
+<li>&#x3D;&#x3D;项目值得改造的地方？&#x3D;&#x3D;<ul>
+<li>旧版项目中我们必须写一个继承自虚拟基类task的任务类，在其中重写run()方法，在submitTask()方法提交任务的时候还必须用形参基类std::shared_ptr&lt;Task&gt;智能指针指向传进来的派生类实参td::make_shared&lt;MyTask&gt;(xx.xx.xx)产生的智能指针，使任务队列可以接受各种各样的任务，并按照要求填写好构造参数，使这些数据可以被run()函数使用。&#x3D;&#x3D;但是在现代c++面前这太臃肿了&#x3D;&#x3D;</li>
+<li>为了run()可以返回的各种各样返回值且由于这个run()是一个虚函数而无法使用模板，所以只能实现一个Any上帝类作为run()的返回类型。又由于我们的用户线程要得到这个储存了返回值的Any,所以我们实现了Result类，在构造时接收当前任务，然后在当前任务的虚拟基类中储存自己的裸指针，通过这个将Any对象赋值给Result对象，它可以通过自己的方法得到Any对象，再得到Any对象中存储的返回值。同时为了保证线程池线程处理任务，给Result对象赋值Any与用户线程取返回值之间的线程通信，我们又自己实现了一个信号量。&#x3D;&#x3D;很优美的设计，但是在现代c++面前还是臃肿&#x3D;&#x3D;</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用可变参模板和future机制来改造项目"><a href="#使用可变参模板和future机制来改造项目" class="headerlink" title="&#x3D;&#x3D;使用可变参模板和future机制来改造项目&#x3D;&#x3D;"></a>&#x3D;&#x3D;使用可变参模板和future机制来改造项目&#x3D;&#x3D;</h2><ul>
+<li>&#x3D;&#x3D;去除掉除了线程池类，线程类和PoolMode枚举类型以外的所有设计，包括虚拟基类Task,Any上帝类，Result结果类和Semphore信号量类，并对剩下的代码进行修改&#x3D;&#x3D;</li>
+</ul>
+<h1 id="前置知识点"><a href="#前置知识点" class="headerlink" title="&#x3D;&#x3D;前置知识点&#x3D;&#x3D;"></a>&#x3D;&#x3D;前置知识点&#x3D;&#x3D;</h1><h3 id="1-引用折叠和完美转发"><a href="#1-引用折叠和完美转发" class="headerlink" title="&#x3D;&#x3D;1.引用折叠和完美转发&#x3D;&#x3D;"></a>&#x3D;&#x3D;1.引用折叠和完美转发&#x3D;&#x3D;</h3><ul>
+<li><strong>什么是左值？什么是右值？</strong><ul>
+<li><em>有名字可以取出地址的都是左值，没有名字，取不出地址的都是右值</em>&#x3D;&#x3D;注意右值引用的变量是一个左值，<code>int&amp;&amp;a=10</code>，有名字有地址，a就是一个左值&#x3D;&#x3D;</li>
+</ul>
+</li>
+<li><strong>引用折叠的由来</strong><ul>
+<li><em>引用折叠的概念主要用在函数模板类型参数的推导中，像T&amp;&amp;这种万能引用类型，利用模板推导和引用折叠实例化模板来接受传进来的参数，右值引用和右值都成右值引用，左值引用和左值都成左值引用。</em>&#x3D;&#x3D;int &amp;&amp; + &amp;&amp;折叠成int&amp;&amp;，除此之外，都折叠成int&amp;&#x3D;&#x3D;</li>
+</ul>
+</li>
+<li><code>std::move()</code>,&#x3D;&#x3D;返回一个左值强转得到的右值引用类型主要用在调用移动构造函数的时候&#x3D;&#x3D;</li>
+<li><strong>forward完美转发机制</strong></li>
+</ul>
+<blockquote>
+<p>&#x3D;&#x3D;重点笔记&#x3D;&#x3D;<a target="_blank" rel="noopener" href="https://www.cnblogs.com/S1mpleBug/p/16703328.html">https://www.cnblogs.com/S1mpleBug/p/16703328.html</a></p>
+</blockquote>
+<h3 id="2-可变参模板"><a href="#2-可变参模板" class="headerlink" title="&#x3D;&#x3D;2.可变参模板&#x3D;&#x3D;"></a>&#x3D;&#x3D;2.可变参模板&#x3D;&#x3D;</h3><ul>
+<li><strong>全特化和偏特化</strong></li>
+</ul>
+<ol>
+<li>函数模板必须全特化</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模板函数</span></span><br><span class="line">template&lt;typename T1, typename T2&gt;</span><br><span class="line"><span class="type">void</span> <span class="title function_">fun</span><span class="params">(T1 a , T2 b)</span> &#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;模板函数&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//全特化</span></span><br><span class="line">template&lt;&gt;</span><br><span class="line"><span class="type">void</span> fun&lt;<span class="type">int</span>, <span class="type">char</span> &gt;(<span class="type">int</span> a, <span class="type">char</span> b) &#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;全特化&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数不存在偏特化：下面的代码是错误的</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">template&lt;typename T2&gt;</span></span><br><span class="line"><span class="comment">void fun&lt;char, T2&gt;(char a, T2 b) &#123;</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; &quot;偏特化&quot; &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>类模板全特化和偏特化都可以</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类模板</span></span><br><span class="line">template&lt;typename T1, typename T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">	Test(T1 i, T2 j) : a(i), b(j) &#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;模板类&quot;</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">private:</span><br><span class="line">	T1 a;</span><br><span class="line">	T2 b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类模板全特化</span></span><br><span class="line">template&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;</span><span class="type">int</span>, <span class="type">char</span>&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">	Test(<span class="type">int</span> i, <span class="type">char</span> j) : a(i), b(j) &#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;全特化&quot;</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">private:</span><br><span class="line">	<span class="type">int</span> a;</span><br><span class="line">	<span class="type">char</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类模板偏特化</span></span><br><span class="line">template &lt;typename T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>&lt;</span><span class="type">char</span>, T2&gt; &#123;</span><br><span class="line">public:</span><br><span class="line">	Test(<span class="type">char</span> i, T2 j) : a(i), b(j) &#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;偏特化&quot;</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">private:</span><br><span class="line">	<span class="type">char</span> a;</span><br><span class="line">	T2 b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Test&lt;<span class="type">double</span>, <span class="type">double</span>&gt; <span class="title function_">t1</span><span class="params">(<span class="number">0.1</span>, <span class="number">0.2</span>)</span>; <span class="comment">// 类模板</span></span><br><span class="line">Test&lt;<span class="type">int</span>, <span class="type">char</span>&gt; <span class="title function_">t2</span><span class="params">(<span class="number">1</span>, <span class="string">&#x27;A&#x27;</span>)</span>; <span class="comment">// 模板全特化</span></span><br><span class="line">Test&lt;<span class="type">char</span>, <span class="type">bool</span>&gt; <span class="title function_">t3</span><span class="params">(<span class="string">&#x27;A&#x27;</span>, <span class="literal">true</span>)</span>; <span class="comment">// 模板偏特化</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="可变参函数模板如何展开参数包"><a href="#可变参函数模板如何展开参数包" class="headerlink" title="&#x3D;&#x3D;可变参函数模板如何展开参数包&#x3D;&#x3D;"></a>&#x3D;&#x3D;可变参函数模板如何展开参数包&#x3D;&#x3D;</h4><ul>
+<li>&#x3D;&#x3D;以递归的方式取出可用参数&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">()</span> &#123;&#125;<span class="comment">//当所有参数全部打印，最后输入的参数为空，会调用这个，防止报错</span></span><br><span class="line"></span><br><span class="line">template&lt;typename T, typename... Args&gt;</span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(<span class="type">const</span> T&amp; firstArg, <span class="type">const</span> Args&amp;... args)</span> &#123;<span class="comment">//接受&gt;=1个数量的参数</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; firstArg &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="keyword">sizeof</span>...(args) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//打印第一个参数和剩余参数数量</span></span><br><span class="line">	print(args...);递归调用，此时第一个参数已经打印，所以只需要输入剩下的参数列表</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>下面这个程序功能上面一样，但是涉及到知识点&#x3D;&#x3D;当泛化和特化的模板函数同时存在的时候，程序会选择较为特化的那一个&#x3D;&#x3D;</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename T&gt;<span class="comment">//处理只有一个参数的情况</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(T arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; arg &lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;<span class="number">0</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">template&lt;typename T, typename... Args&gt;</span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(<span class="type">const</span> T&amp; firstArg, <span class="type">const</span> Args&amp;... args)</span> &#123;<span class="comment">//接受&gt;=1个数量的参数</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; firstArg &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="keyword">sizeof</span>...(args) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//打印第一个参数和剩余参数数量</span></span><br><span class="line">	print(args...);递归调用，此时第一个参数已经打印，所以只需要输入剩下的参数列表</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>&#x3D;&#x3D;运用实例，可变参模板找最大值&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">T <span class="title function_">my_max</span><span class="params">(T value)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template &lt;typename T, typename... Types&gt;</span><br><span class="line">T <span class="title function_">my_max</span><span class="params">(T value, Types... args)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">std</span>::max(value, my_max(args...));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; my_max(<span class="number">1</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">6</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>&#x3D;&#x3D;递归展开参数包的问题在于必须同名的更特化的重载函数作为递归的终止条件，我们可以通过逗号表达式来展开参数包&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">template&lt;typename T, typename ...Args&gt;</span><br><span class="line"><span class="type">void</span> <span class="title function_">expand</span><span class="params">(<span class="type">const</span> T &amp;func, Args&amp;&amp;... args)</span> &#123;</span><br><span class="line">    <span class="comment">// 最重要的就是一行</span></span><br><span class="line">    <span class="comment">//利用逗号表达式执行前面的函数，返回后面的0</span></span><br><span class="line">    <span class="comment">//利用初始化列表和可变参...,展开模板，最后arr是一个size...(args)长度的0数组，每个参数也都传进了lambda函数</span></span><br><span class="line">    <span class="type">int</span> arr[] = &#123; (func(<span class="built_in">std</span>::forward&lt;Args&gt;(args)), <span class="number">0</span>)... &#125;;</span><br><span class="line">    <span class="comment">//如果用递归展开参数包，不仅要写终止函数，而且多谢一个参数来提取每一次递归时展开的那个参数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//泛型lambda接受任意类型数据</span></span><br><span class="line">    expand([](<span class="keyword">auto</span> i)-&gt;<span class="type">void</span>&#123;<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;&#125;, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="可变参类模板如何展开参数包"><a href="#可变参类模板如何展开参数包" class="headerlink" title="&#x3D;&#x3D;可变参类模板如何展开参数包&#x3D;&#x3D;"></a>&#x3D;&#x3D;可变参类模板如何展开参数包&#x3D;&#x3D;</h4><ul>
+<li>偏特化和递归</li>
+<li>enum的作用</li>
+<li>可以用integral_constant代替enum</li>
+</ul>
+<blockquote>
+<p>&#x3D;&#x3D;重点笔记&#x3D;&#x3D;<a target="_blank" rel="noopener" href="https://www.cnblogs.com/S1mpleBug/p/16834298.html">https://www.cnblogs.com/S1mpleBug/p/16834298.html</a></p>
+</blockquote>
+<h3 id="3-auto与deltype类型说明符"><a href="#3-auto与deltype类型说明符" class="headerlink" title="&#x3D;&#x3D;3.auto与deltype类型说明符&#x3D;&#x3D;"></a>&#x3D;&#x3D;3.auto与deltype类型说明符&#x3D;&#x3D;</h3><ul>
+<li><h3 id="const"><a href="#const" class="headerlink" title="&#x3D;&#x3D;const&#x3D;&#x3D;"></a>&#x3D;&#x3D;const&#x3D;&#x3D;</h3></li>
+</ul>
+<p><img src="https://pic.imgdb.cn/item/648ec8a71ddac507cca0bf3b.png" loading="lazy"></p>
+<ul>
+<li>&#x3D;&#x3D;补充说明之常量引用&#x3D;&#x3D;<ul>
+<li>如果引用左值，不可以通过引用改变左值的值，但是却可以通过其他途径修改，包括直接修改和用另一个引用</li>
+<li>如果引用右值，一般来说左值引用初始化必须还左值，但是常量应用却不一样，它可以引用右值</li>
+<li>&#x3D;&#x3D;实践意义&#x3D;&#x3D;<ul>
+<li>常量引用来做函数的形参</li>
+<li>用一个函数的局部变量去初始化一个常量引用，那这个临时变量的生命周期就会被延长，直到引用被销毁<ul>
+<li>可以用一个基类的引用指向一个子类的临时变量，然后通过这个引用来实现多态，但又不用处理子类的销毁</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43335392/article/details/106404619">https://blog.csdn.net/weixin_43335392/article/details/106404619</a></p>
+</blockquote>
+<ul>
+<li>&#x3D;&#x3D;补充说明之顶层const和底层const&#x3D;&#x3D;<ul>
+<li><strong>牢记顶层const就是这个变量本身是常量，不可以改变，<code>const int a =1;const int &amp;a=1; int b=1,int* const a=&amp;b</code>。底层const则是变量指向的地址上的值不可以改变。</strong></li>
+<li>&#x3D;&#x3D;规则总结&#x3D;&#x3D;<ul>
+<li>顶层const在赋值给其他变量时，可以忽略顶层属性</li>
+<li>底层const在赋值给其他变量时，不能忽略底层属性</li>
+<li>底层const无法转换为顶层const，反过来却可以</li>
+<li>int*类型可以转换为顶层和底层const，所以它可以给顶层和底层的const赋值。这句话往牢记上靠，没那么玄乎，就是普通的赋值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43744293/article/details/117955427">https://blog.csdn.net/weixin_43744293/article/details/117955427</a></p>
+</blockquote>
+<ul>
+<li><h3 id="auto-根据初始化表达式推导变量的类型"><a href="#auto-根据初始化表达式推导变量的类型" class="headerlink" title="auto 根据初始化表达式推导变量的类型"></a>auto 根据初始化表达式推导变量的类型</h3></li>
+</ul>
+<ol>
+<li>规则1：声明为auto（不是auto&amp;）的变量，忽视掉初始化表达式的顶层const。即对有const的普通类型(int、double等)忽视const，对常量指针（顶层const）变为普通指针，对指向常量（底层const）的常量指针（顶层cosnt）变为指向常量的指针（底层const）。&#x3D;&#x3D;同时也会忽略引用&#x3D;&#x3D;</li>
+<li>若希望auto推导的是顶层const，加上const，即const auto。</li>
+<li>声明为auto&amp;的变量，保持初始化表达式的顶层const</li>
+</ol>
+<ul>
+<li>&#x3D;&#x3D;实际应用&#x3D;&#x3D;</li>
+</ul>
+<ol>
+<li>代替冗长复杂的变量声明<ul>
+<li>通过迭代器遍历容器时声明begin()</li>
+</ul>
+</li>
+<li>定义模板参数时，用于声明依赖模板参数的变量</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename _Tx,typename _Ty&gt;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Multiply</span><span class="params">(_Tx x, _Ty y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> v = x+y;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43744293/article/details/117440727">https://blog.csdn.net/weixin_43744293/article/details/117440727</a></p>
+</blockquote>
+<ul>
+<li><h3 id="decltype返回-操作数的类型"><a href="#decltype返回-操作数的类型" class="headerlink" title="decltype返回()操作数的类型"></a>decltype返回()操作数的类型</h3></li>
+</ul>
+<ol>
+<li>decltype + 变量(加个（）啥的就是表达式了)<ul>
+<li>当使用decltype(var)的形式时，decltype会直接返回变量的类型&#x3D;&#x3D;包括顶层const和引用&#x3D;&#x3D;</li>
+<li><strong>例外</strong>不会将数组转换成初始地址为数组首位的指针，在decltype(var)-&gt;decltype(var)*</li>
+</ul>
+</li>
+<li>decltype + 表达式<ul>
+<li>decltype并不会实际计算表达式的值，编译器分析表达式并得到它的类型.<br>&#x3D;&#x3D;decltype(expr)的结果根据expr的结果不同而不同：expr返回左值，得到该类型的左值引用；expr返回右值，得到该类型&#x3D;&#x3D;</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i = <span class="number">42</span>, *p = &amp;i, &amp;r = i;</span><br><span class="line"></span><br><span class="line"><span class="comment">// r + 0是一个表达式</span></span><br><span class="line"><span class="comment">// 算术表达式返回右值</span></span><br><span class="line"><span class="comment">// b是一个int类型</span></span><br><span class="line">decltype(r + <span class="number">0</span>) b;</span><br><span class="line"></span><br><span class="line"><span class="comment">// c是一个int &amp;</span></span><br><span class="line">decltype(*p) c = i;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>decltype + 函数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明了一个函数类型</span></span><br><span class="line">using FuncType = <span class="type">int</span>(<span class="type">int</span> &amp;, <span class="type">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下面的函数就是上面的类型</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">add_to</span><span class="params">(<span class="type">int</span> &amp;des, <span class="type">int</span> ori)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明了一个FuncType类型的指针</span></span><br><span class="line"><span class="comment">// 并使用函数add_to初始化</span></span><br><span class="line">FuncType *pf = add_to;</span><br><span class="line"><span class="comment">//decltype(add_to) *pf = add_to;可以省略using那一步</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过函数指针调用add_to</span></span><br><span class="line">pf(a, <span class="number">2</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014609638/article/details/106987131">https://blog.csdn.net/u014609638/article/details/106987131</a></p>
+</blockquote>
+<ul>
+<li><h3 id="auto与decltype的综合应用"><a href="#auto与decltype的综合应用" class="headerlink" title="auto与decltype的综合应用"></a>auto与decltype的综合应用</h3>   *&#x3D;&#x3D;泛型编程中，用于追踪函数的返回值类型&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename _Tx, typename _Ty&gt;</span><br><span class="line"><span class="keyword">auto</span> <span class="title function_">multiply</span><span class="params">(_Tx x, _Ty y)</span>-&gt;<span class="title function_">decltype</span><span class="params">(_Tx*_Ty)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> x*y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li></li>
+</ul>
+<h2 id="4-future和packaged-task和promise和async"><a href="#4-future和packaged-task和promise和async" class="headerlink" title="&#x3D;&#x3D;4.future和packaged_task和promise和async&#x3D;&#x3D;"></a>&#x3D;&#x3D;4.future和packaged_task和promise和async&#x3D;&#x3D;</h2><ol>
+<li><strong>为什么要有std::ref()</strong></li>
+</ol>
+<ul>
+<li><em>主要用于向thread对象的线程函数传引用，或者在bind绑定函数参数的时候不使用placeholder::_x占位符的情况下传引用，不然都是浅拷贝。这里注意一下这个bind绑定参数不使用占位符和使用占位符对返回的函数类型的影响</em><br>&#x3D;&#x3D;std::ref()主要就是在这两种情况下做引用传递的&#x3D;&#x3D;</li>
+</ul>
+<ol>
+<li><strong>future和promise主要为了解决例如在用户线程开启子线程，我们希望在用户线程中得到子线程中线程函数中的值这种情况</strong><ul>
+<li>一般来说是传入一个全局变量的引用在线程函数中赋值给他，同时还有通过锁+条件变量来维护线程通信的安全性</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在主线程中绑定future和promise的对象</span></span><br><span class="line"><span class="built_in">std</span>::promise&lt;<span class="type">int</span>&gt; p1;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f1=p1.get_future();</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::promise&lt;<span class="type">int</span>&gt; p2;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f2=p2.get_future();</span><br><span class="line"><span class="comment">//我们可以将p1传进线程函数中</span></span><br><span class="line">p1[这个看参数啊].set_value()</span><br><span class="line"><span class="comment">//然后在主线程中得到这个值</span></span><br><span class="line">f1.get()</span><br><span class="line"><span class="comment">//并且都是线程安全的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//也可以将f2传进线程函数中，在函数中等待主线程的值</span></span><br><span class="line">f2.get()</span><br><span class="line"><span class="comment">//主线程赋值</span></span><br><span class="line">p2.set_value()</span><br><span class="line"></span><br><span class="line"><span class="comment">//注意注意注意！！！如果你在一个线程函数中都使用了，注意顺序，别死锁了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//我们还可以往多个线程中传入同一个future,就是shared_future</span></span><br><span class="line"><span class="built_in">std</span>::promise&lt;<span class="type">int</span>&gt; p;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f=p.get_future();</span><br><span class="line"><span class="built_in">std</span>::shared_future&lt;<span class="type">int</span>&gt; s_f=f.shared_future()</span><br><span class="line"><span class="comment">//可以在线程函数中多次get(),传的时候也不用ref</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>packaged_task</strong></li>
+</ol>
+<ul>
+<li><em>std::packaged_task它包装了一个可调用的目标（如function, lambda expression, bind expression, or another function object）,以便异步调用，它和promise在某种程度上有点像，promise保存了一个共享状态的值，而packaged_task保存的是一 个函数。</em></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::packaged_task&lt;<span class="title function_">int</span><span class="params">()</span>&gt; <span class="title function_">task</span><span class="params">([]()&#123; <span class="keyword">return</span> <span class="number">7</span>; &#125;)</span>;<span class="comment">//也可以是一个bind函数</span></span><br><span class="line"><span class="built_in">std</span>::thread <span class="title function_">t1</span><span class="params">(<span class="built_in">std</span>::ref(task))</span>; </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f1 = task.get_future(); </span><br><span class="line"><span class="keyword">auto</span> r1 = f1.get();</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>为什么有了promise后还需要packaged_task？</strong></li>
+</ol>
+<ul>
+<li>一个是我承诺会给你一个美好的未来，一个是我会给你创造一个美好的未来</li>
+</ul>
+<ol>
+<li><strong>异步接口async</strong>&#x3D;&#x3D;简化到啥都不需要管，连线程都不需要自己创建了&#x3D;&#x3D;</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">task</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f = <span class="built_in">std</span>::async(task,<span class="number">1</span>,<span class="number">2</span>)<span class="comment">//任务函数，参数，参数</span></span><br><span class="line"><span class="comment">//此时的task是一有返回值的正常函数</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f = <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async,task,<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">//在调用async就开始创建线程。</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">future</span>&lt;<span class="type">int</span>&gt; f = <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::deferred,task,<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">//延迟加载方式创建线程。调用async时不创建线程，直到调用了future的get或者wait时才创建线程。</span></span><br><span class="line">f.get()</span><br><span class="line"><span class="comment">//此时</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>future的一些其他方法<a target="_blank" rel="noopener" href="https://www.cnblogs.com/haippy/p/3280643.html">https://www.cnblogs.com/haippy/p/3280643.html</a></p>
+</blockquote>
+<h2 id="5-thread的参数如果是引用为什么不能直接传，而要通过std-ref-修饰"><a href="#5-thread的参数如果是引用为什么不能直接传，而要通过std-ref-修饰" class="headerlink" title="&#x3D;&#x3D;5.thread的参数如果是引用为什么不能直接传，而要通过std::ref()修饰&#x3D;&#x3D;"></a>&#x3D;&#x3D;5.thread的参数如果是引用为什么不能直接传，而要通过std::ref()修饰&#x3D;&#x3D;</h2><ol>
+<li>通过vs2019报错信息我们知道问题出在<code>invoke</code>函数<br><img src="https://pic.imgdb.cn/item/64939bd01ddac507cc19d9bb.png" loading="lazy"></li>
+<li>这个函数的将实参以右值的形式传递给线程函数的形参，一个左值引用是无法接收一个右值的，可以改成常量引用和右值引用。</li>
+<li>&#x3D;&#x3D;为什么std::ref()可以&#x3D;&#x3D;、<ul>
+<li>它返回一个<code>reference_wrapper</code>对象，这个对象调用自身的opredtor()重载函数，转换成对应的引用类型。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://pic.imgdb.cn/item/64939ea91ddac507cc1d5a85.png" loading="lazy"><br><img src="https://pic.imgdb.cn/item/64939eb81ddac507cc1d6eec.png" loading="lazy"></p>
+<ul>
+<li><strong>函数对象使用中调用的方法</strong><br><img src="https://pic.imgdb.cn/item/6493f2611ddac507cc9823af.png" loading="lazy"><br>特别注意初始化时的临时变量优化和static变量数据段在析构时全析构了才析构</li>
+<li><strong>函数调用过程中对象调用的方法，不考虑编译器优化</strong><br><img src="https://pic.imgdb.cn/item/6493f6401ddac507cc9e3df3.png" loading="lazy"></li>
+<li><strong>三条对象优化规则</strong></li>
+</ul>
+<ol>
+<li>函数的参数尽量按引用传递对象，不要按值传递对象，减少实参赋值给形参的拷贝构造和出函数时的析构</li>
+<li>函数返回对象的时候不要返回局部变量对象，应该返回临时对象，这样在出函数时，临时对象拷贝构造同类型新对象编译器优化，省去这个临时对象的构造和析构。</li>
+<li>接收返回值是对象的函数调用时，尽量用来初始化，不要用来赋值</li>
+</ol>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>bbkkp</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://bbkkp.github.io/2024/08/31/thread%20pool%20stereotyped%20writing.html/" title="线程池">https://bbkkp.github.io/2024/08/31/thread%20pool%20stereotyped%20writing.html/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2024/08/31/network%20world%20stereotyped%20writing.html/" rel="next" title="网络世界八股文"><span class="post-nav-text">网络世界八股文</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2024 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> bbkkp</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.11</span></div><div class="live-time"><span>感谢陪伴</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2024-08-30T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div><div class="footer-custom-text"><a href="yourLink" rel="noopener" target="_blank">学就完了</a></div><div class="footer-support"><span>本站由</span><a class="footer-support-logo" href="https://www.rainyun.com/YeMeng_" target="blank" title="雨云"><img height="30" src="https://cn-sy1.rains3.com/yemenghexo/rainyunlogo.png" alt="雨云"></a><span>提供 对象存储 服务</span></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body></html>

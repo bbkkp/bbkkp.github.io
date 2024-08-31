@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="bbkkp"><meta name="copyright" content="bbkkp"><meta name="generator" content="Hexo 7.3.0"><meta name="theme" content="hexo-theme-yun"><title>CMake实战项目github | bbkkpの折腾日记</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.4.1/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"bbkkp.github.io","root":"/","title":"踏着梦走过时光","version":"1.10.11","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"fireworks":{"colors":null},"vendors":{"host":"https://fastly.jsdelivr.net/npm/","darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><meta name="description" content="https:&#x2F;&#x2F;www.hahack.com&#x2F;codes&#x2F;cmake&#x2F;#cmake-demo基本介绍CMake是一种高级的快平台编译配置工具。就像GNU的make，QT的qmake，如果一个项目在不同的平台上运行就要编写不同的Makefile,太过低效。只需要一次编写，就可以根据实际情况生成Linux的Makefile和windows的vs工程文件 main.cc#include &lt;stdi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMake实战项目github">
+<meta property="og:url" content="https://bbkkp.github.io/2024/08/31/CMake%20Live%20project%20github.html/index.html">
+<meta property="og:site_name" content="bbkkpの折腾日记">
+<meta property="og:description" content="https:&#x2F;&#x2F;www.hahack.com&#x2F;codes&#x2F;cmake&#x2F;#cmake-demo基本介绍CMake是一种高级的快平台编译配置工具。就像GNU的make，QT的qmake，如果一个项目在不同的平台上运行就要编写不同的Makefile,太过低效。只需要一次编写，就可以根据实际情况生成Linux的Makefile和windows的vs工程文件 main.cc#include &lt;stdi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/04/13/vTm9hDoJFunzR1P.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/13/P14Dh95iryeJN2s.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/13/ZbwnM9vIgAKQzlj.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/13/Pje5zBGVqrUgtaA.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/14/eT7zPD5CFOrGsiL.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/14/Ax6umQ8ZCWJE2eI.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/14/QTcueWLJUPBkZdX.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/14/JILtz2XZfHoGjCx.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/04/14/1GfImdjyaUBrwi2.jpg">
+<meta property="article:published_time" content="2024-08-31T13:09:03.000Z">
+<meta property="article:modified_time" content="2024-08-31T13:10:11.111Z">
+<meta property="article:author" content="bbkkp">
+<meta property="article:tag" content="CMake">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/04/13/vTm9hDoJFunzR1P.jpg"><script>(function() {
+  if (CONFIG.mode !== 'auto') return
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="bbkkp"><img width="96" loading="lazy" src="/images/head.jpg" alt="bbkkp"><span class="site-author-status" title="四季花开">☺️</span></a><div class="site-author-name"><a href="/about/">bbkkp</a></div><span class="site-name">bbkkpの折腾日记</span><sub class="site-subtitle">一个人的世界</sub><div class="site-description">踏着梦走过时光</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">55</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">13</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">39</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/bbkkp" title="GitHub" target="_blank" style="color:#181717"><span class="icon iconify" data-icon="ri:github-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="2094921157@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><span class="icon iconify" data-icon="ri:mail-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/" title="知乎" target="_blank" style="color:#0084FF"><span class="icon iconify" data-icon="ri:zhihu-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><span class="icon iconify" data-icon="ri:bilibili-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" target="_blank" rel="noopener" href="https://github.com/bbkkp" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#https-www-hahack-com-codes-cmake"><span class="toc-number">1.</span> <span class="toc-text">https:&#x2F;&#x2F;www.hahack.com&#x2F;codes&#x2F;cmake&#x2F;#</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cmake-demo"><span class="toc-number">2.</span> <span class="toc-text">cmake-demo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">基本介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#main-cc"><span class="toc-number">2.1.1.</span> <span class="toc-text">main.cc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MathFunctions-cc"><span class="toc-number">2.1.2.</span> <span class="toc-text">MathFunctions.cc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MathFunctions-h"><span class="toc-number">2.1.3.</span> <span class="toc-text">MathFunctions.h</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%B8%80%E6%96%87%E4%BB%B6%E4%B8%8BCMakeLists-txt%E6%96%87%E4%BB%B6%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-number">2.1.4.</span> <span class="toc-text">同一文件下CMakeLists.txt文件的编写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%95%88%E6%9E%9C"><span class="toc-number">2.1.4.1.</span> <span class="toc-text">测试效果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%8B%E7%9A%84CMakeLists-txt%E6%96%87%E4%BB%B6%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-number">2.1.5.</span> <span class="toc-text">多个文件下的CMakeLists.txt文件的编写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%95%88%E6%9E%9C-1"><span class="toc-number">2.1.5.1.</span> <span class="toc-text">测试效果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%9B%AE%E5%BD%95%E5%A4%9A%E6%96%87%E4%BB%B6%E7%9A%84CMakeLists-txt%E6%96%87%E4%BB%B6%E7%9A%84%E7%BC%96%E5%86%99"><span class="toc-number">2.1.6.</span> <span class="toc-text">多目录多文件的CMakeLists.txt文件的编写</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E6%A0%91"><span class="toc-number">2.1.6.1.</span> <span class="toc-text">目录结构树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E7%9B%AE%E5%BD%95CMakeLists-txt%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.6.2.</span> <span class="toc-text">主目录CMakeLists.txt文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AC%A1%E7%9B%AE%E5%BD%95%E4%B8%8BCMakeLists-txt%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.6.3.</span> <span class="toc-text">次目录下CMakeLists.txt文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E5%B0%8F%E6%80%BB%E7%BB%93"><span class="toc-number">2.2.</span> <span class="toc-text">指令小总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">测试结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMakeLists-txt%E7%9A%84%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">CMakeLists.txt的高级用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87CMake%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9"><span class="toc-number">2.3.1.</span> <span class="toc-text">通过CMake自定义编译选项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E7%9A%84main-cc%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">新的main.cc文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#config-h-in%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">config.h.in文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84CMakeLists-txt%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">主目录下的CMakeLists.txt文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-1"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">测试结果</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ccmake%E7%BC%96%E8%AF%91%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.3.1.4.1.</span> <span class="toc-text">ccmake编译项目</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E8%BE%93%E5%87%BA"><span class="toc-number">2.3.1.4.2.</span> <span class="toc-text">不同情况下的输出</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87CMake%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85%E5%92%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">通过CMake进行安装和测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E5%88%B6%E5%AE%89%E8%A3%85%E8%A7%84%E5%88%99"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">定制安装规则</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AC%A1%E7%9B%AE%E5%BD%95CMakeLists-txt%E6%96%87%E4%BB%B6%E6%B7%BB%E5%8A%A0"><span class="toc-number">2.3.2.1.1.</span> <span class="toc-text">次目录CMakeLists.txt文件添加</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E7%9B%AE%E5%BD%95CMakeLists-txt%E6%96%87%E4%BB%B6%E6%B7%BB%E5%8A%A0"><span class="toc-number">2.3.2.1.2.</span> <span class="toc-text">主目录CMakeLists.txt文件添加</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A"><span class="toc-number">2.3.2.1.3.</span> <span class="toc-text">解释</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-2"><span class="toc-number">2.3.2.1.4.</span> <span class="toc-text">测试结果</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">工程测试</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E7%9B%AE%E5%BD%95CMakeLists-txt%E6%B7%BB%E5%8A%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">2.3.2.2.1.</span> <span class="toc-text">主目录CMakeLists.txt添加命令</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-3"><span class="toc-number">2.3.2.2.2.</span> <span class="toc-text">测试结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">2.3.3.</span> <span class="toc-text">添加版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5"><span class="toc-number">2.3.4.</span> <span class="toc-text">添加环境检查</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">3.</span> <span class="toc-text">生成安装包</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="https://bbkkp.github.io/2024/08/31/CMake%20Live%20project%20github.html/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="bbkkp"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="bbkkpの折腾日记"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">CMake实战项目github</h1><div class="post-meta"><div class="post-time"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2024-08-31 21:09:03" itemprop="dateCreated datePublished" datetime="2024-08-31T21:09:03+08:00">2024-08-31</time></div><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/CMake/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">CMake</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/CMake/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">CMake</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h1 id="https-www-hahack-com-codes-cmake"><a href="#https-www-hahack-com-codes-cmake" class="headerlink" title="https://www.hahack.com/codes/cmake/#"></a><a target="_blank" rel="noopener" href="https://www.hahack.com/codes/cmake/#">https://www.hahack.com/codes/cmake/#</a></h1><h1 id="cmake-demo"><a href="#cmake-demo" class="headerlink" title="cmake-demo"></a>cmake-demo</h1><h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p><code>CMake</code>是一种高级的快平台编译配置工具。就像<code>GNU</code>的<code>make</code>，<code>QT</code>的<code>qmake</code>，如果一个项目在不同的平台上运行就要编写不同的<code>Makefile</code>,太过低效。只需要一次编写，就可以根据实际情况生成<code>Linux</code>的<code>Makefile</code>和<code>windows</code>的<code>vs工程文件</code></p>
+<h3 id="main-cc"><a href="#main-cc" class="headerlink" title="main.cc"></a>main.cc</h3><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+double power(double base, int exponent)
+&#123;
+    int result = base;
+    int i;
+    if (exponent == 0) &#123;
+        return 1;
+    &#125;
+    for(i = 1; i &lt; exponent; ++i)&#123;
+        result = result * base;
+    &#125;
+    return result;
+&#125;
+/*argc是参数的个数,以空白符分隔，
+例./Demo 2 10 就是3个。
+argv[]是参数的数组*/
+
+int main(int argc, char *argv[])
+&#123;
+    if (argc &lt; 3)&#123;
+        printf(&quot;Usage: %s base exponent \n&quot;, argv[0]);
+        return 1;
+    &#125;
+    double base = atof(argv[1]);
+    int exponent = atoi(argv[2]);
+    double result = power(base, exponent);
+    printf(&quot;%g ^ %d is %g\n&quot;, base, exponent, result);
+    return 0;
+&#125;
+</code></pre>
+<h3 id="MathFunctions-cc"><a href="#MathFunctions-cc" class="headerlink" title="MathFunctions.cc"></a>MathFunctions.cc</h3><pre><code>double power(double base, int exponent)
+&#123;
+    int result = base;
+    int i;
+
+    if (exponent == 0) &#123;
+        return 1;
+    &#125;
+    
+    for(i = 1; i &lt; exponent; ++i)&#123;
+        result = result * base;
+    &#125;
+
+    return result;
+&#125;
+</code></pre>
+<h3 id="MathFunctions-h"><a href="#MathFunctions-h" class="headerlink" title="MathFunctions.h"></a>MathFunctions.h</h3><pre><code>#ifndef POWER_H
+#define POWER_H
+
+extern double power(double base, int exponent);
+
+#endif
+</code></pre>
+<h3 id="同一文件下CMakeLists-txt文件的编写"><a href="#同一文件下CMakeLists-txt文件的编写" class="headerlink" title="同一文件下CMakeLists.txt文件的编写"></a>同一文件下CMakeLists.txt文件的编写</h3><pre><code># CMake 最低版本号要求
+cmake_minimum_required (VERSION 2.8)
+#项目目录
+# 项目信息
+project (Demo1)
+#目标文件和依赖文件
+# 指定生成目标
+add_executable(Demo main.cc)
+</code></pre>
+<h4 id="测试效果"><a href="#测试效果" class="headerlink" title="测试效果"></a>测试效果</h4><p><img src="https://s2.loli.net/2022/04/13/vTm9hDoJFunzR1P.jpg" alt="Screenshot 2022-04-13 221527.jpg" loading="lazy"></p>
+<h3 id="多个文件下的CMakeLists-txt文件的编写"><a href="#多个文件下的CMakeLists-txt文件的编写" class="headerlink" title="多个文件下的CMakeLists.txt文件的编写"></a>多个文件下的CMakeLists.txt文件的编写</h3><pre><code># CMake 最低版本号要求
+cmake_minimum_required (VERSION 2.8)
+
+# 项目信息
+project (Demo2)
+# 查找目录下的所有源文件
+# 并将名称保存到 DIR_SRCS 变量
+#这个.代表的是当前目录
+aux_source_directory(. DIR_SRCS)
+
+# 指定生成目标
+add_executable(Demo $&#123;DIR_SRCS&#125;)
+</code></pre>
+<h4 id="测试效果-1"><a href="#测试效果-1" class="headerlink" title="测试效果"></a>测试效果</h4><p><img src="https://s2.loli.net/2022/04/13/P14Dh95iryeJN2s.jpg" alt="Screenshot 2022-04-13 223435.jpg" loading="lazy"></p>
+<h3 id="多目录多文件的CMakeLists-txt文件的编写"><a href="#多目录多文件的CMakeLists-txt文件的编写" class="headerlink" title="多目录多文件的CMakeLists.txt文件的编写"></a>多目录多文件的CMakeLists.txt文件的编写</h3><h4 id="目录结构树"><a href="#目录结构树" class="headerlink" title="目录结构树"></a>目录结构树</h4><p><img src="https://s2.loli.net/2022/04/13/ZbwnM9vIgAKQzlj.jpg" alt="Screenshot 2022-04-13 223839.jpg" loading="lazy"></p>
+<h4 id="主目录CMakeLists-txt文件"><a href="#主目录CMakeLists-txt文件" class="headerlink" title="主目录CMakeLists.txt文件"></a>主目录CMakeLists.txt文件</h4><pre><code># CMake 最低版本号要求
+cmake_minimum_required (VERSION 2.8)
+
+# 项目信息
+project (Demo3)
+
+# 查找目录下的所有源文件
+# 并将名称保存到 DIR_SRCS 变量
+aux_source_directory(. DIR_SRCS)
+
+# 添加 math 子目录
+add_subdirectory(math)
+
+# 指定生成目标
+add_executable(Demo $&#123;DIR_SRCS&#125;)
+
+# 添加链接库
+target_link_libraries(Demo MathFunctions)
+</code></pre>
+<h4 id="次目录下CMakeLists-txt文件"><a href="#次目录下CMakeLists-txt文件" class="headerlink" title="次目录下CMakeLists.txt文件"></a>次目录下CMakeLists.txt文件</h4><pre><code># 查找当前目录下的所有源文件
+# 并将名称保存到 DIR_LIB_SRCS 变量
+aux_source_directory(. DIR_LIB_SRCS)
+# 指定生成 MathFunctions 链接库
+add_library (MathFunctions $&#123;DIR_LIB_SRCS&#125;)
+</code></pre>
+<h2 id="指令小总结"><a href="#指令小总结" class="headerlink" title="指令小总结"></a>指令小总结</h2><p>&#x3D;&#x3D;anx_source_directory查找目录源文件&#x3D;&#x3D;<br>&#x3D;&#x3D;add_executable目标文件&#x3D;&#x3D;<br>&#x3D;&#x3D;add_library链接文件&#x3D;&#x3D;<br>&#x3D;&#x3D;add_subdirectory添加子目录&#x3D;&#x3D;<br>&#x3D;&#x3D;target_link_libraries添加链接库&#x3D;&#x3D;</p>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="https://s2.loli.net/2022/04/13/Pje5zBGVqrUgtaA.jpg" alt="Screenshot 2022-04-13 225721.jpg" loading="lazy"></p>
+<h2 id="CMakeLists-txt的高级用法"><a href="#CMakeLists-txt的高级用法" class="headerlink" title="CMakeLists.txt的高级用法"></a>CMakeLists.txt的高级用法</h2><h3 id="通过CMake自定义编译选项"><a href="#通过CMake自定义编译选项" class="headerlink" title="通过CMake自定义编译选项"></a>通过CMake自定义编译选项</h3><p>CMake 允许为项目增加编译选项，从而可以根据用户的环境和需求选择最合适的编译方案。例如，可以将 MathFunctions 库设为一个可选的库，如果该选项为 ON ，就使用该库定义的数学函数来进行运算。否则就调用标准库中的数学函数库。</p>
+<h4 id="新的main-cc文件"><a href="#新的main-cc文件" class="headerlink" title="新的main.cc文件"></a>新的main.cc文件</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;config.h&quot;
+
+#ifdef USE_MYMATH
+  #include &quot;math/MathFunctions.h&quot;
+#else
+  #include &lt;math.h&gt;
+#endif
+
+
+int main(int argc, char *argv[])
+&#123;
+    if (argc &lt; 3)&#123;
+        printf(&quot;Usage: %s base exponent \n&quot;, argv[0]);
+        return 1;
+    &#125;
+    double base = atof(argv[1]);
+    int exponent = atoi(argv[2]);
+    
+#ifdef USE_MYMATH
+    printf(&quot;Now we use our own Math library. \n&quot;);
+    double result = power(base, exponent);
+#else
+    printf(&quot;Now we use the standard library. \n&quot;);
+    double result = pow(base, exponent);
+#endif
+    printf(&quot;%g ^ %d is %g\n&quot;, base, exponent, result);
+    return 0;
+&#125;
+</code></pre>
+<p><strong>区别在于让其根据 <u>USE_MYMATH</u>的预定义值来决定是否调用标准库还是 MathFunctions 库</strong></p>
+<h4 id="config-h-in文件"><a href="#config-h-in文件" class="headerlink" title="config.h.in文件"></a>config.h.in文件</h4><blockquote>
+<p>#cmakedefine USE_MYMATH<br><strong>CMake会根据设置的USE_MYMATH值通过CMakeLists.txt生成对应的config.h文件</strong></p>
+</blockquote>
+<h4 id="主目录下的CMakeLists-txt文件"><a href="#主目录下的CMakeLists-txt文件" class="headerlink" title="主目录下的CMakeLists.txt文件"></a>主目录下的CMakeLists.txt文件</h4><pre><code># CMake 最低版本号要求
+cmake_minimum_required (VERSION 2.8)
+
+# 项目信息
+project (Demo4)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# 是否使用自己的 MathFunctions 库
+option (USE_MYMATH
+       &quot;Use provided math implementation&quot; ON)
+
+# 加入一个配置头文件，用于处理 CMake 对源码的设置
+configure_file (
+  &quot;$&#123;PROJECT_SOURCE_DIR&#125;/config.h.in&quot;
+  &quot;$&#123;PROJECT_BINARY_DIR&#125;/config.h&quot;
+  )
+
+# 是否加入 MathFunctions 库
+if (USE_MYMATH)
+  include_directories (&quot;$&#123;PROJECT_SOURCE_DIR&#125;/math&quot;)
+  add_subdirectory (math)
+  set (EXTRA_LIBS $&#123;EXTRA_LIBS&#125; MathFunctions)
+endif (USE_MYMATH)
+
+# 查找当前目录下的所有源文件
+# 并将名称保存到 DIR_SRCS 变量
+aux_source_directory(. DIR_SRCS)
+
+# 指定生成目标
+add_executable (Demo $&#123;DIR_SRCS&#125;)
+target_link_libraries (Demo  $&#123;EXTRA_LIBS&#125;)
+</code></pre>
+<p><strong>待解释</strong><br><strong>主要是中间的一部分是关键，但实在不理解</strong></p>
+<h4 id="测试结果-1"><a href="#测试结果-1" class="headerlink" title="测试结果"></a>测试结果</h4><h5 id="ccmake编译项目"><a href="#ccmake编译项目" class="headerlink" title="ccmake编译项目"></a>ccmake编译项目</h5><p><img src="https://s2.loli.net/2022/04/14/eT7zPD5CFOrGsiL.jpg" alt="Screenshot 2022-04-14 001927.jpg" loading="lazy"><br><strong>按<code>c</code>开始设置，<code>enter</code>改变设置，再按<code>c</code>保存设置，按<code>g</code>生成Makefile文件</strong></p>
+<h5 id="不同情况下的输出"><a href="#不同情况下的输出" class="headerlink" title="不同情况下的输出"></a>不同情况下的输出</h5><blockquote>
+<p>USE_MYMATH&#x3D;ON</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2022/04/14/Ax6umQ8ZCWJE2eI.jpg" alt="Screenshot 2022-04-14002848.jpg" loading="lazy"><br>config.h的内容</p>
+<blockquote>
+<p>#define USE_MYMATH</p>
+</blockquote>
+<blockquote>
+<p>USE_MYMATH&#x3D;OFF</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2022/04/14/QTcueWLJUPBkZdX.jpg" alt="Screenshot 2022-04-14 003200.jpg" loading="lazy"><br>config.h的内容</p>
+<blockquote>
+<p>#undef USE_MYMATH</p>
+</blockquote>
+<h3 id="通过CMake进行安装和测试"><a href="#通过CMake进行安装和测试" class="headerlink" title="通过CMake进行安装和测试"></a>通过CMake进行安装和测试</h3><h4 id="定制安装规则"><a href="#定制安装规则" class="headerlink" title="定制安装规则"></a>定制安装规则</h4><h5 id="次目录CMakeLists-txt文件添加"><a href="#次目录CMakeLists-txt文件添加" class="headerlink" title="次目录CMakeLists.txt文件添加"></a>次目录CMakeLists.txt文件添加</h5><pre><code># 指定 MathFunctions 库的安装路径
+install (TARGETS MathFunctions DESTINATION bin)
+install (FILES MathFunctions.h DESTINATION include)
+</code></pre>
+<h5 id="主目录CMakeLists-txt文件添加"><a href="#主目录CMakeLists-txt文件添加" class="headerlink" title="主目录CMakeLists.txt文件添加"></a>主目录CMakeLists.txt文件添加</h5><pre><code># 指定安装路径
+install (TARGETS Demo DESTINATION bin)
+install (FILES &quot;$&#123;PROJECT_BINARY_DIR&#125;/config.h&quot;
+         DESTINATION include)
+</code></pre>
+<h5 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h5><p>通过上面的定制，生成的 <code>Demo </code>文件和 <code>MathFunctions </code>函数库 <code>libMathFunctions.a </code>文件将会被复制到 <code>/usr/local/lib </code>中，而 <code>MathFunctions.h </code>和生成的 <code>config.h</code> 文件则会被复制到 <code>/usr/local/include</code> 中</p>
+<h5 id="测试结果-2"><a href="#测试结果-2" class="headerlink" title="测试结果"></a>测试结果</h5><p><img src="https://s2.loli.net/2022/04/14/JILtz2XZfHoGjCx.jpg" alt="Screenshot 2022-04-14 152455.jpg" loading="lazy"></p>
+<h4 id="工程测试"><a href="#工程测试" class="headerlink" title="工程测试"></a>工程测试</h4><p>通过<code>CTest</code>工具在主目录下的CMakeLists.txt文件中添加一系列的<code>add_test</code>命令或者编写宏</p>
+<h5 id="主目录CMakeLists-txt添加命令"><a href="#主目录CMakeLists-txt添加命令" class="headerlink" title="主目录CMakeLists.txt添加命令"></a>主目录CMakeLists.txt添加命令</h5><pre><code># 启用测试
+enable_testing()
+
+# 测试程序是否成功运行
+add_test (test_run Demo 5 2)
+
+# 测试帮助信息是否可以正常提示
+add_test (test_usage Demo)
+set_tests_properties (test_usage
+  PROPERTIES PASS_REGULAR_EXPRESSION &quot;Usage: .* base exponent&quot;)
+
+# 测试 5 的平方
+add_test (test_5_2 Demo 5 2)
+
+set_tests_properties (test_5_2
+ PROPERTIES PASS_REGULAR_EXPRESSION &quot;is 25&quot;)
+
+# 测试 10 的 5 次方
+add_test (test_10_5 Demo 10 5)
+
+set_tests_properties (test_10_5
+ PROPERTIES PASS_REGULAR_EXPRESSION &quot;is 100000&quot;)
+
+# 测试 2 的 10 次方
+add_test (test_2_10 Demo 2 10)
+
+set_tests_properties (test_2_10
+ PROPERTIES PASS_REGULAR_EXPRESSION &quot;is 1024&quot;)
+</code></pre>
+<h5 id="测试结果-3"><a href="#测试结果-3" class="headerlink" title="测试结果"></a>测试结果</h5><p><img src="https://s2.loli.net/2022/04/14/1GfImdjyaUBrwi2.jpg" alt="Screenshot 2022-04-14 153738.jpg" loading="lazy"></p>
+<h3 id="添加版本号"><a href="#添加版本号" class="headerlink" title="添加版本号"></a>添加版本号</h3><h3 id="添加环境检查"><a href="#添加环境检查" class="headerlink" title="添加环境检查"></a>添加环境检查</h3><h1 id="生成安装包"><a href="#生成安装包" class="headerlink" title="生成安装包"></a>生成安装包</h1></div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>bbkkp</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://bbkkp.github.io/2024/08/31/CMake%20Live%20project%20github.html/" title="CMake实战项目github">https://bbkkp.github.io/2024/08/31/CMake%20Live%20project%20github.html/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2024/08/31/Win11%20Home%20Chinese%20docker%20tutorial%20-2024-8.html/" rel="prev" title="Win11家庭中文版docker教程 -2024-8"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">Win11家庭中文版docker教程 -2024-8</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2024/08/31/CMake.html/" rel="next" title="CMake"><span class="post-nav-text">CMake</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2024 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> bbkkp</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.11</span></div><div class="live-time"><span>感谢陪伴</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2024-08-30T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div><div class="footer-custom-text"><a href="yourLink" rel="noopener" target="_blank">学就完了</a></div><div class="footer-support"><span>本站由</span><a class="footer-support-logo" href="https://www.rainyun.com/YeMeng_" target="blank" title="雨云"><img height="30" src="https://cn-sy1.rains3.com/yemenghexo/rainyunlogo.png" alt="雨云"></a><span>提供 对象存储 服务</span></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body></html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="bbkkp"><meta name="copyright" content="bbkkp"><meta name="generator" content="Hexo 7.3.0"><meta name="theme" content="hexo-theme-yun"><title>计算机网络八股文 | bbkkpの折腾日记</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.4.1/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"bbkkp.github.io","root":"/","title":"踏着梦走过时光","version":"1.10.11","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"fireworks":{"colors":null},"vendors":{"host":"https://fastly.jsdelivr.net/npm/","darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><meta name="description" content="超文本传输协议HTTP 是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？HTTP状态码 1xx2xx200,204,2063xx301,302,3044xx400,403,4045xx500,501,502,503  HTTP常见字段 HostContent-LengthConnectionContent-TypeContent-Encoding  GET和POST的区别HTT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络八股文">
+<meta property="og:url" content="https://bbkkp.github.io/2024/08/31/Eight%20articles%20on%20computer%20networks.html/index.html">
+<meta property="og:site_name" content="bbkkpの折腾日记">
+<meta property="og:description" content="超文本传输协议HTTP 是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？HTTP状态码 1xx2xx200,204,2063xx301,302,3044xx400,403,4045xx500,501,502,503  HTTP常见字段 HostContent-LengthConnectionContent-TypeContent-Encoding  GET和POST的区别HTT">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-31T14:00:33.000Z">
+<meta property="article:modified_time" content="2024-08-31T14:07:44.803Z">
+<meta property="article:author" content="bbkkp">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary"><script>(function() {
+  if (CONFIG.mode !== 'auto') return
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="bbkkp"><img width="96" loading="lazy" src="/images/head.jpg" alt="bbkkp"><span class="site-author-status" title="四季花开">☺️</span></a><div class="site-author-name"><a href="/about/">bbkkp</a></div><span class="site-name">bbkkpの折腾日记</span><sub class="site-subtitle">一个人的世界</sub><div class="site-description">踏着梦走过时光</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">55</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">13</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">39</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/bbkkp" title="GitHub" target="_blank" style="color:#181717"><span class="icon iconify" data-icon="ri:github-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="2094921157@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><span class="icon iconify" data-icon="ri:mail-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/" title="知乎" target="_blank" style="color:#0084FF"><span class="icon iconify" data-icon="ri:zhihu-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><span class="icon iconify" data-icon="ri:bilibili-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" target="_blank" rel="noopener" href="https://github.com/bbkkp" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">超文本传输协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-%E6%98%AF%E7%94%A8%E4%BA%8E%E4%BB%8E%E4%BA%92%E8%81%94%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%A0%E8%BE%93%E8%B6%85%E6%96%87%E6%9C%AC%E5%88%B0%E6%9C%AC%E5%9C%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E5%8D%8F%E8%AE%AE%E3%80%8D%EF%BC%8C%E8%BF%99%E7%A7%8D%E8%AF%B4%E6%B3%95%E6%AD%A3%E7%A1%AE%E5%90%97%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">HTTP 是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">HTTP状态码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E5%B8%B8%E8%A7%81%E5%AD%97%E6%AE%B5"><span class="toc-number">4.</span> <span class="toc-text">HTTP常见字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET%E5%92%8CPOST%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">GET和POST的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E7%BC%93%E5%AD%98%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">HTTP缓存的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">强制缓存的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">8.</span> <span class="toc-text">协商缓存的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Etag%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">9.</span> <span class="toc-text">Etag的好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%BA%AFHTTP%E4%BC%98%E7%82%B93%E4%B8%AA"><span class="toc-number">10.</span> <span class="toc-text">单纯HTTP优点3个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%BA%AFHTTP%E7%BC%BA%E7%82%B93%E4%B8%AA"><span class="toc-number">11.</span> <span class="toc-text">单纯HTTP缺点3个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">12.</span> <span class="toc-text">HTTPS解决的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8B%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84https%E9%80%9A%E4%BF%A1%E8%BF%87%E7%A8%8B%E6%9D%A5%E5%B1%95%E7%A4%BA%E4%BD%9C%E7%94%A8"><span class="toc-number">13.</span> <span class="toc-text">以下可以用一个完整的https通信过程来展示作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA%E7%AE%97%E6%B3%95%E7%9A%84%E5%9B%9B%E6%AC%A1TLS%E6%8F%A1%E6%89%8B%E9%98%B6%E6%AE%B5-%E6%B7%B7%E5%90%88%E5%8A%A0%E5%AF%86-%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE"><span class="toc-number">14.</span> <span class="toc-text">RSA算法的四次TLS握手阶段(混合加密)握手协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CA%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6"><span class="toc-number">15.</span> <span class="toc-text">CA数字证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE"><span class="toc-number">16.</span> <span class="toc-text">记录协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E4%B8%80%E5%AE%9A%E6%98%AF%E5%AE%89%E5%85%A8%E5%8F%AF%E9%9D%A0%E7%9A%84%E4%B9%88"><span class="toc-number">17.</span> <span class="toc-text">HTTPS一定是安全可靠的么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%93%E8%B7%91%E6%98%8E%E6%96%87%E6%9F%A5%E7%9C%8BHTTPS%E4%BF%A1%E6%81%AF%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">18.</span> <span class="toc-text">抓跑明文查看HTTPS信息的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E7%9B%B8%E6%AF%941-0"><span class="toc-number">19.</span> <span class="toc-text">1.1相比1.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E7%9B%B8%E6%AF%941-1"><span class="toc-number">20.</span> <span class="toc-text">2相比1.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E6%AF%942"><span class="toc-number">21.</span> <span class="toc-text">3比2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP1-1%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88-%E4%B8%89%E4%B8%AA%E5%A4%A7%E6%96%B9%E5%90%91"><span class="toc-number">22.</span> <span class="toc-text">HTTP1.1的性能优化方案 三个大方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDHE%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-number">23.</span> <span class="toc-text">ECDHE加密算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS%E4%BC%98%E5%8C%96%EF%BC%8C%E7%A1%AC%E4%BB%B6%E4%BC%98%E5%8C%96%E5%92%8C%E8%BD%AF%E4%BB%B6%E4%BC%98%E5%8C%96%E9%83%BD%E4%BB%A3%E4%BB%B7%E5%A4%AA%E5%A4%A7"><span class="toc-number">24.</span> <span class="toc-text">HTTPS优化，硬件优化和软件优化都代价太大</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE%E5%8D%8F%E8%AE%AE%E4%BC%98%E5%8C%96"><span class="toc-number">25.</span> <span class="toc-text">建议协议优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E4%BC%98%E5%8C%96"><span class="toc-number">26.</span> <span class="toc-text">证书优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%94%A8%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5"><span class="toc-number">27.</span> <span class="toc-text">重用对称加密密钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B4%E9%83%A8%E5%8E%8B%E7%BC%A9-%E9%9D%99%E6%80%81%E8%A1%A8-%E5%8A%A8%E6%80%81%E8%A1%A8"><span class="toc-number">28.</span> <span class="toc-text">头部压缩 静态表+动态表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7"><span class="toc-number">29.</span> <span class="toc-text">二进制帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E4%BC%A0%E8%BE%93"><span class="toc-number">30.</span> <span class="toc-text">并发传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%BB%E5%8A%A8%E6%8E%A8%E9%80%81%E8%B5%84%E6%BA%90"><span class="toc-number">31.</span> <span class="toc-text">服务器主动推送资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%97%A0%E9%98%9F%E5%A4%B4%E9%98%BB%E5%A1%9E"><span class="toc-number">32.</span> <span class="toc-text">3 无队头阻塞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%BF%AB%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="toc-number">33.</span> <span class="toc-text">更快的连接建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E8%BF%81%E7%A7%BB"><span class="toc-number">34.</span> <span class="toc-text">连接迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E7%84%B6%E6%9C%89%E6%9C%89%E4%BA%86HTTP-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81%E6%9C%89RPC"><span class="toc-number">35.</span> <span class="toc-text">既然有有了HTTP,为什么还要有RPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E7%84%B6%E6%9C%89%E6%9C%89%E4%BA%86HTTP-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81%E6%9C%89WebSocket"><span class="toc-number">36.</span> <span class="toc-text">既然有有了HTTP,为什么还要有WebSocket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E5%A4%B4%E6%A0%BC%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-number">37.</span> <span class="toc-text">TCP头格式有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-TCP-%E5%8D%8F%E8%AE%AE%EF%BC%9F-TCP-%E5%B7%A5%E4%BD%9C%E5%9C%A8%E5%93%AA%E4%B8%80%E5%B1%82%EF%BC%9F"><span class="toc-number">38.</span> <span class="toc-text">为什么需要 TCP 协议？ TCP 工作在哪一层？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFTCP"><span class="toc-number">39.</span> <span class="toc-text">什么是TCP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-TCP-%E8%BF%9E%E6%8E%A5%EF%BC%9F"><span class="toc-number">40.</span> <span class="toc-text">什么是 TCP 连接？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%94%AF%E4%B8%80%E7%A1%AE%E5%AE%9A%E4%B8%80%E4%B8%AA-TCP-%E8%BF%9E%E6%8E%A5%E5%91%A2%EF%BC%9F"><span class="toc-number">41.</span> <span class="toc-text">如何唯一确定一个 TCP 连接呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E4%B8%80%E4%B8%AA-IP-%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9B%91%E5%90%AC%E4%BA%86%E4%B8%80%E4%B8%AA%E7%AB%AF%E5%8F%A3%EF%BC%8C%E5%AE%83%E7%9A%84-TCP-%E7%9A%84%E6%9C%80%E5%A4%A7%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">42.</span> <span class="toc-text">有一个 IP 的服务端监听了一个端口，它的 TCP 的最大连接数是多少？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP-%E5%92%8C-TCP-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%E5%91%A2"><span class="toc-number">43.</span> <span class="toc-text">UDP 和 TCP 有什么区别呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E5%92%8C-UDP-%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">44.</span> <span class="toc-text">TCP 和 UDP 应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-UDP-%E5%A4%B4%E9%83%A8%E6%B2%A1%E6%9C%89%E3%80%8C%E9%A6%96%E9%83%A8%E9%95%BF%E5%BA%A6%E3%80%8D%E5%AD%97%E6%AE%B5%EF%BC%8C%E8%80%8C-TCP-%E5%A4%B4%E9%83%A8%E6%9C%89%E3%80%8C%E9%A6%96%E9%83%A8%E9%95%BF%E5%BA%A6%E3%80%8D%E5%AD%97%E6%AE%B5%E5%91%A2%EF%BC%9F"><span class="toc-number">45.</span> <span class="toc-text">为什么 UDP 头部没有「首部长度」字段，而 TCP 头部有「首部长度」字段呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-UDP-%E5%A4%B4%E9%83%A8%E6%9C%89%E3%80%8C%E5%8C%85%E9%95%BF%E5%BA%A6%E3%80%8D%E5%AD%97%E6%AE%B5%EF%BC%8C%E8%80%8C-TCP-%E5%A4%B4%E9%83%A8%E5%88%99%E6%B2%A1%E6%9C%89%E3%80%8C%E5%8C%85%E9%95%BF%E5%BA%A6%E3%80%8D%E5%AD%97%E6%AE%B5%E5%91%A2%EF%BC%9F"><span class="toc-number">46.</span> <span class="toc-text">为什么 UDP 头部有「包长度」字段，而 TCP 头部则没有「包长度」字段呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B-%E8%AF%A6%E7%BB%86%E7%89%88"><span class="toc-number">47.</span> <span class="toc-text">三次握手过程(详细版)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8BTCP%E7%8A%B6%E6%80%81"><span class="toc-number">48.</span> <span class="toc-text">如何查看TCP状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8F%A1%E6%89%8B%E4%B8%89%E6%AC%A1%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9B%9B%E6%AC%A1"><span class="toc-number">49.</span> <span class="toc-text">为什么握手三次而不是四次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8F%A1%E6%89%8B%E4%B8%89%E6%AC%A1%E8%80%8C%E4%B8%8D%E6%98%AF%E4%B8%A4%E6%AC%A1"><span class="toc-number">50.</span> <span class="toc-text">为什么握手三次而不是两次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%8F%E6%AC%A1%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5%E6%97%B6%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%BA%8F%E5%88%97%E5%8F%B7%E9%83%BD%E8%A6%81%E6%B1%82%E4%B8%8D%E4%B8%80%E6%A0%B7%E5%91%A2%EF%BC%9F"><span class="toc-number">51.</span> <span class="toc-text">为什么每次建立 TCP 连接时，初始化的序列号都要求不一样呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%BA%8F%E5%88%97%E5%8F%B7-ISN-%E6%98%AF%E5%A6%82%E4%BD%95%E9%9A%8F%E6%9C%BA%E4%BA%A7%E7%94%9F%E7%9A%84%EF%BC%9F"><span class="toc-number">52.</span> <span class="toc-text">初始序列号 ISN 是如何随机产生的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E7%84%B6-IP-%E5%B1%82%E4%BC%9A%E5%88%86%E7%89%87%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88-TCP-%E5%B1%82%E8%BF%98%E9%9C%80%E8%A6%81-MSS-%E5%91%A2%EF%BC%9F"><span class="toc-number">53.</span> <span class="toc-text">既然 IP 层会分片，为什么 TCP 层还需要 MSS 呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">54.</span> <span class="toc-text">第一次握手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">55.</span> <span class="toc-text">第二次握手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">56.</span> <span class="toc-text">第三次握手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-SYN-%E6%94%BB%E5%87%BB%EF%BC%9F"><span class="toc-number">57.</span> <span class="toc-text">什么是 SYN 攻击？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D-SYN-%E6%94%BB%E5%87%BB%EF%BC%9F"><span class="toc-number">58.</span> <span class="toc-text">如何避免 SYN 攻击？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="toc-number">59.</span> <span class="toc-text">四次挥手过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-number">60.</span> <span class="toc-text">为什么四次挥手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">61.</span> <span class="toc-text">第一次挥手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">62.</span> <span class="toc-text">第二次挥手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">63.</span> <span class="toc-text">第三次挥手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1%E4%BA%86%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">64.</span> <span class="toc-text">第四次挥手丢失了，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-TIME-WAIT-%E7%AD%89%E5%BE%85%E7%9A%84%E6%97%B6%E9%97%B4%E6%98%AF-2MSL%EF%BC%9F"><span class="toc-number">65.</span> <span class="toc-text">为什么 TIME_WAIT 等待的时间是 2MSL？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TIME-WAIT-%E8%BF%87%E5%A4%9A%E6%9C%89%E4%BB%80%E4%B9%88%E5%8D%B1%E5%AE%B3%EF%BC%9F"><span class="toc-number">66.</span> <span class="toc-text">TIME_WAIT 过多有什么危害？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96-TIME-WAIT%EF%BC%9F"><span class="toc-number">67.</span> <span class="toc-text">如何优化 TIME_WAIT？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F-TIME-WAIT-%E7%8A%B6%E6%80%81%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">68.</span> <span class="toc-text">服务器出现大量 TIME_WAIT 状态的原因有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F-CLOSE-WAIT-%E7%8A%B6%E6%80%81%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">69.</span> <span class="toc-text">服务器出现大量 CLOSE_WAIT 状态的原因有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E5%B7%B2%E7%BB%8F%E5%BB%BA%E7%AB%8B%E4%BA%86%E8%BF%9E%E6%8E%A5%EF%BC%8C%E4%BD%86%E6%98%AF%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%AA%81%E7%84%B6%E5%87%BA%E7%8E%B0%E6%95%85%E9%9A%9C%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">70.</span> <span class="toc-text">如果已经建立了连接，但是客户端突然出现故障了怎么办？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E5%B7%B2%E7%BB%8F%E5%BB%BA%E7%AB%8B%E4%BA%86%E8%BF%9E%E6%8E%A5%EF%BC%8C%E4%BD%86%E6%98%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E8%BF%9B%E7%A8%8B%E5%B4%A9%E6%BA%83%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">71.</span> <span class="toc-text">如果已经建立了连接，但是服务端的进程崩溃会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E8%BF%9E%E6%8E%A5%EF%BC%8C%E4%B8%80%E7%AB%AF%E6%96%AD%E7%94%B5%E5%92%8C%E8%BF%9B%E7%A8%8B%E5%B4%A9%E6%BA%83%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">72.</span> <span class="toc-text">TCP 连接，一端断电和进程崩溃有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6%E4%B9%8B%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0"><span class="toc-number">73.</span> <span class="toc-text">重传机制之超时重传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0"><span class="toc-number">74.</span> <span class="toc-text">重传机制之快速重传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E4%BC%A0%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%9F%BA%E4%BA%8E%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0%E7%9A%84SACK%E6%96%B9%E6%B3%95"><span class="toc-number">75.</span> <span class="toc-text">重传机制之基于快速重传的SACK方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E7%9A%84%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">76.</span> <span class="toc-text">基于滑动窗口的流量控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA%E4%B8%8E%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-number">77.</span> <span class="toc-text">缓冲区与滑动窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E5%85%B3%E9%97%AD%E6%97%B6%EF%BC%8C%E6%BD%9C%E5%9C%A8%E7%9A%84%E6%AD%BB%E9%94%81%E7%8E%B0%E8%B1%A1"><span class="toc-number">78.</span> <span class="toc-text">窗口关闭时，潜在的死锁现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%8A%E6%B6%82%E7%AA%97%E5%8F%A3%E7%BB%BC%E5%90%88%E7%97%87%E6%9D%A1%E4%BB%B6"><span class="toc-number">79.</span> <span class="toc-text">糊涂窗口综合症条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%8A%E6%B6%82%E7%AA%97%E5%8F%A3%E7%BB%BC%E5%90%88%E7%97%87%E8%A7%A3%E5%86%B3"><span class="toc-number">80.</span> <span class="toc-text">糊涂窗口综合症解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">81.</span> <span class="toc-text">基于拥塞窗口的拥塞控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E7%AA%97%E5%8F%A3%E5%92%8C%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3"><span class="toc-number">82.</span> <span class="toc-text">拥塞窗口和发送窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E6%80%8E%E4%B9%88%E7%9F%A5%E9%81%93%E5%BD%93%E5%89%8D%E7%BD%91%E7%BB%9C%E6%98%AF%E5%90%A6%E5%87%BA%E7%8E%B0%E4%BA%86%E6%8B%A5%E5%A1%9E%E5%91%A2"><span class="toc-number">83.</span> <span class="toc-text">那么怎么知道当前网络是否出现了拥塞呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%85%A2%E5%90%AF%E5%8A%A8-cwnd"><span class="toc-number">84.</span> <span class="toc-text">慢启动 cwnd&lt;ssthresh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E7%AE%97%E6%B3%95-cwnd-ssthresh"><span class="toc-number">85.</span> <span class="toc-text">拥塞避免算法 cwnd&gt;&#x3D;ssthresh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A4%9A%E4%BA%86%E4%B8%8D%E5%8F%AF%E9%81%BF%E5%85%8D%E7%9A%84%E4%BC%9A%E9%87%8D%E4%BC%A0%E8%BF%9B%E5%85%A5%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F%E7%AE%97%E6%B3%95"><span class="toc-number">86.</span> <span class="toc-text">发送的数据多了不可避免的会重传进入拥塞发生算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0%E6%8B%A5%E5%A1%9E%E4%B9%8B%E5%90%8E%E7%9A%84%E5%BF%AB%E9%80%9F%E5%9B%9E%E5%A4%8D"><span class="toc-number">87.</span> <span class="toc-text">快速重传拥塞之后的快速回复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E4%BC%98%E5%8C%96"><span class="toc-number">88.</span> <span class="toc-text">TCP优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4UDP%E9%9D%A2%E5%90%91%E6%8A%A5%E6%96%87"><span class="toc-number">89.</span> <span class="toc-text">为什么说UDP面向报文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4TCP%E9%9D%A2%E5%90%91%E5%AD%97%E8%8A%82%E6%B5%81"><span class="toc-number">90.</span> <span class="toc-text">为什么说TCP面向字节流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E7%B2%98%E5%8C%85"><span class="toc-number">91.</span> <span class="toc-text">解决粘包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-TCP%E6%AF%8F%E6%AC%A1%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E6%97%B6%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%E5%BA%8F%E5%88%97%E5%8F%B7%E9%83%BD%E8%A6%81%E4%B8%8D%E4%B8%80%E6%A0%B7%E5%91%A2%EF%BC%9F"><span class="toc-number">92.</span> <span class="toc-text">为什么 TCP每次建立连接时，初始化序列号都要不一样呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SYN-%E6%8A%A5%E6%96%87%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E8%A2%AB%E4%B8%A2%E5%BC%83%EF%BC%9F"><span class="toc-number">93.</span> <span class="toc-text">SYN 报文什么时候情况下会被丢弃？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%B2%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84TCP%EF%BC%8C%E6%94%B6%E5%88%B0SYN%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88"><span class="toc-number">94.</span> <span class="toc-text">已建立连接的TCP，收到SYN会发生什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E9%80%A0RET"><span class="toc-number">95.</span> <span class="toc-text">伪造RET</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%AD%E6%94%B6%E5%88%B0%E4%B9%B1%E5%BA%8F%E7%9A%84-FIN-%E5%8C%85%E4%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">96.</span> <span class="toc-text">四次挥手中收到乱序的 FIN 包会如何处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-TCP-%E6%AD%A3%E5%B8%B8%E6%8C%A5%E6%89%8B%E8%BF%87%E7%A8%8B%E4%B8%AD%EF%BC%8C%E5%A4%84%E4%BA%8E-TIME-WAIT-%E7%8A%B6%E6%80%81%E7%9A%84%E8%BF%9E%E6%8E%A5%EF%BC%8C%E6%94%B6%E5%88%B0%E7%9B%B8%E5%90%8C%E5%9B%9B%E5%85%83%E7%BB%84%E7%9A%84-SYN-%E5%90%8E%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">97.</span> <span class="toc-text">在 TCP 正常挥手过程中，处于 TIME_WAIT 状态的连接，收到相同四元组的 SYN 后会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-TIME-WAIT-%E7%8A%B6%E6%80%81%EF%BC%8C%E6%94%B6%E5%88%B0-RST-%E4%BC%9A%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5%E5%90%97%EF%BC%9F"><span class="toc-number">98.</span> <span class="toc-text">在 TIME_WAIT 状态，收到 RST 会断开连接吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%94%E6%8E%89%E7%BD%91%E7%BA%BF%E5%90%8E%EF%BC%8C-%E5%8E%9F%E6%9C%AC%E7%9A%84-TCP-%E8%BF%9E%E6%8E%A5%E8%BF%98%E5%AD%98%E5%9C%A8%E5%90%97%EF%BC%9F"><span class="toc-number">99.</span> <span class="toc-text">拔掉网线后， 原本的 TCP 连接还存在吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcp-tw-reuse-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E6%98%AF%E5%85%B3%E9%97%AD%E7%9A%84%EF%BC%9F"><span class="toc-number">100.</span> <span class="toc-text">tcp_tw_reuse 为什么默认是关闭的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS-%E4%B8%AD-TLS-%E5%92%8C-TCP-%E8%83%BD%E5%90%8C%E6%97%B6%E6%8F%A1%E6%89%8B%E5%90%97%EF%BC%9F"><span class="toc-number">101.</span> <span class="toc-text">HTTPS 中 TLS 和 TCP 能同时握手吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%8F%98%E6%88%90%E4%B8%89%E6%AC%A1%E5%90%97%EF%BC%9F"><span class="toc-number">102.</span> <span class="toc-text">TCP 四次挥手，可以变成三次吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E5%BA%8F%E5%88%97%E5%8F%B7%E5%92%8C%E7%A1%AE%E8%AE%A4%E5%8F%B7%E6%98%AF%E5%A6%82%E4%BD%95%E5%8F%98%E5%8C%96%E7%9A%84%EF%BC%9F"><span class="toc-number">103.</span> <span class="toc-text">TCP 序列号和确认号是如何变化的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-%E5%92%8C-UDP-%E5%8F%AF%E4%BB%A5%E5%90%8C%E6%97%B6%E7%9B%91%E5%90%AC%E7%9B%B8%E5%90%8C%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%90%97%EF%BC%9F"><span class="toc-number">104.</span> <span class="toc-text">TCP 和 UDP 可以同时监听相同的端口吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA-TCP-%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E5%8F%AF%E4%BB%A5%E7%BB%91%E5%AE%9A%E5%90%8C%E4%B8%80%E4%B8%AA%E7%AB%AF%E5%8F%A3%E5%90%97"><span class="toc-number">105.</span> <span class="toc-text">多个 TCP 服务进程可以绑定同一个端口吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF-TCP-%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%97%B6%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E2%80%9CAddress-in-use%E2%80%9D%E7%9A%84%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="toc-number">106.</span> <span class="toc-text">重启 TCP 服务进程时，为什么会有“Address in use”的报错信息？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF-TCP-%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E2%80%9CAddress-in-use%E2%80%9D%E7%9A%84%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="toc-number">107.</span> <span class="toc-text">重启 TCP 服务进程时，如何避免“Address in use”的报错信息？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9%E7%9A%84%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="toc-number">108.</span> <span class="toc-text">客户端端口选择的流程总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B2%A1%E6%9C%89-listen%EF%BC%8C%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">109.</span> <span class="toc-text">服务端没有 listen，客户端发起连接建立，会发生什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8-listen-%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5%E5%90%97%EF%BC%9F"><span class="toc-number">110.</span> <span class="toc-text">不使用 listen ，可以建立 TCP 连接吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89-accept%EF%BC%8C%E8%83%BD%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5%E5%90%97%EF%BC%9F"><span class="toc-number">111.</span> <span class="toc-text">没有 accept，能建立 TCP 连接吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E3%80%81%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">112.</span> <span class="toc-text">半连接队列、全连接队列是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%BB%A1%E4%BA%86%E4%BC%9A%E6%80%8E%E6%A0%B7"><span class="toc-number">113.</span> <span class="toc-text">全连接队列满了会怎样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E6%BB%A1%E4%BA%86%E4%BC%9A%E6%80%8E%E6%A0%B7"><span class="toc-number">114.</span> <span class="toc-text">半连接队列满了会怎样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E5%92%8CMAC%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="toc-number">115.</span> <span class="toc-text">IP和MAC的差别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-A%E3%80%81B%E3%80%81C-%E7%B1%BB%E5%9C%B0%E5%9D%80%EF%BC%9F"><span class="toc-number">116.</span> <span class="toc-text">什么是 A、B、C 类地址？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-D%E3%80%81E-%E7%B1%BB%E5%9C%B0%E5%9D%80%EF%BC%9F"><span class="toc-number">117.</span> <span class="toc-text">什么是 D、E 类地址？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%92%AD%E5%9C%B0%E5%9D%80%E7%94%A8%E4%BA%8E%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">118.</span> <span class="toc-text">多播地址用于什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP-%E5%88%86%E7%B1%BB%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">119.</span> <span class="toc-text">IP 分类的缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%88%86%E7%B1%BB%E5%9C%B0%E5%9D%80-CIDR%EF%BC%8C%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="toc-number">120.</span> <span class="toc-text">无分类地址 CIDR，子网掩码解决问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%9B%9E%E5%9C%B0%E5%9D%80%E6%98%AF%E4%B8%8D%E4%BC%9A%E6%B5%81%E5%90%91%E7%BD%91%E7%BB%9C"><span class="toc-number">121.</span> <span class="toc-text">环回地址是不会流向网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">122.</span> <span class="toc-text">DNS域名解析的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP%E5%B9%BF%E6%92%AD%E8%AF%B7%E6%B1%82-RARP%E5%90%91RARP%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82"><span class="toc-number">123.</span> <span class="toc-text">ARP广播请求 RARP向RARP服务器请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DHCP%E5%8A%A8%E6%80%81%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E5%8D%8F%E8%AE%AE"><span class="toc-number">124.</span> <span class="toc-text">DHCP动态主机配置协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DCHP%E4%B8%AD%E7%BB%A7%E4%BB%A3%E7%90%86%E8%A7%A3%E5%86%B3%E5%B9%BF%E6%92%AD%E4%B8%8D%E5%87%BA%E5%8C%BA%E5%9F%9F%E7%BD%91%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">125.</span> <span class="toc-text">DCHP中继代理解决广播不出区域网的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E4%B8%8E%E7%AB%AF%E5%8F%A3%E8%BD%AC%E6%8D%A2-NAPT"><span class="toc-number">126.</span> <span class="toc-text">网络地址与端口转换 NAPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP"><span class="toc-number">127.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IGMP"><span class="toc-number">128.</span> <span class="toc-text">IGMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ping%E4%BD%BF%E7%94%A8%E6%9F%A5%E8%AF%A2%E6%8A%A5%E6%96%87%E7%B1%BB%E5%9E%8B%EF%BC%8C%E8%80%8Ctraceroute%E5%88%99%E4%BD%BF%E7%94%A8%E5%B7%AE%E9%94%99%E6%8A%A5%E6%96%87%E7%B1%BB%E5%9E%8B"><span class="toc-number">129.</span> <span class="toc-text">ping使用查询报文类型，而traceroute则使用差错报文类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E7%8E%AF%E5%9C%B0%E5%9D%80-%E6%9C%AC%E6%9C%BA%E5%9F%9F%E5%90%8D-localhost-0-0-0-0"><span class="toc-number">130.</span> <span class="toc-text">回环地址 本机域名 localhost 0.0.0.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP-IP%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">131.</span> <span class="toc-text">TCP&#x2F;IP网络模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%AE%E5%85%A5%E7%BD%91%E5%9D%80%E5%88%B0%E7%BD%91%E9%A1%B5%E6%98%BE%E7%A4%BA%EF%BC%8C%E6%9C%9F%E9%97%B4%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">132.</span> <span class="toc-text">键入网址到网页显示，期间发生了什么？</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="https://bbkkp.github.io/2024/08/31/Eight%20articles%20on%20computer%20networks.html/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="bbkkp"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="bbkkpの折腾日记"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">计算机网络八股文</h1><div class="post-meta"><div class="post-time"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2024-08-31 22:00:33" itemprop="dateCreated datePublished" datetime="2024-08-31T22:00:33+08:00">2024-08-31</time></div><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%85%AB%E8%82%A1%E6%96%87/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">八股文</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">计算机网络</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h2 id="超文本传输协议"><a href="#超文本传输协议" class="headerlink" title="超文本传输协议"></a>超文本传输协议</h2><h2 id="HTTP-是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？"><a href="#HTTP-是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？" class="headerlink" title="HTTP 是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？"></a>HTTP 是用于从互联网服务器传输超文本到本地浏览器的协议」，这种说法正确吗？</h2><h2 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h2><blockquote>
+<p>1xx<br>2xx<br>200,204,206<br>3xx<br>301,302,304<br>4xx<br>400,403,404<br>5xx<br>500,501,502,503</p>
+</blockquote>
+<h2 id="HTTP常见字段"><a href="#HTTP常见字段" class="headerlink" title="HTTP常见字段"></a>HTTP常见字段</h2><blockquote>
+<p>Host<br>Content-Length<br>Connection<br>Content-Type<br>Content-Encoding</p>
+</blockquote>
+<h2 id="GET和POST的区别"><a href="#GET和POST的区别" class="headerlink" title="GET和POST的区别"></a>GET和POST的区别</h2><h2 id="HTTP缓存的实现方法"><a href="#HTTP缓存的实现方法" class="headerlink" title="HTTP缓存的实现方法"></a>HTTP缓存的实现方法</h2><h2 id="强制缓存的实现方法"><a href="#强制缓存的实现方法" class="headerlink" title="强制缓存的实现方法"></a>强制缓存的实现方法</h2><h2 id="协商缓存的实现方法"><a href="#协商缓存的实现方法" class="headerlink" title="协商缓存的实现方法"></a>协商缓存的实现方法</h2><h2 id="Etag的好处"><a href="#Etag的好处" class="headerlink" title="Etag的好处"></a>Etag的好处</h2><h2 id="单纯HTTP优点3个"><a href="#单纯HTTP优点3个" class="headerlink" title="单纯HTTP优点3个"></a>单纯HTTP优点3个</h2><h2 id="单纯HTTP缺点3个"><a href="#单纯HTTP缺点3个" class="headerlink" title="单纯HTTP缺点3个"></a>单纯HTTP缺点3个</h2><h2 id="HTTPS解决的问题"><a href="#HTTPS解决的问题" class="headerlink" title="HTTPS解决的问题"></a>HTTPS解决的问题</h2><h2 id="以下可以用一个完整的https通信过程来展示作用"><a href="#以下可以用一个完整的https通信过程来展示作用" class="headerlink" title="以下可以用一个完整的https通信过程来展示作用"></a>以下可以用一个完整的https通信过程来展示作用</h2><h2 id="RSA算法的四次TLS握手阶段-混合加密-握手协议"><a href="#RSA算法的四次TLS握手阶段-混合加密-握手协议" class="headerlink" title="RSA算法的四次TLS握手阶段(混合加密)握手协议"></a>RSA算法的四次TLS握手阶段(混合加密)握手协议</h2><blockquote>
+<p>ClientHello<br>支持的TLS版本，支持的加密算法，生成的随机数<br>ServerHello<br>确定的TLS版本，确定的加密算法，生成的随机数，数字证书<br>Client回应<br>加密算法改变通知，一个随机数，握手结束，对之前的内容做一个摘要供服务端验证<br>Server回应<br>加密算法改变通知，握手结束，对之前的内容做一个摘要供服务端验证</p>
+</blockquote>
+<h2 id="CA数字证书"><a href="#CA数字证书" class="headerlink" title="CA数字证书"></a>CA数字证书</h2><blockquote>
+<p>哈希值对比和证书信任链</p>
+</blockquote>
+<h2 id="记录协议"><a href="#记录协议" class="headerlink" title="记录协议"></a>记录协议</h2><h2 id="HTTPS一定是安全可靠的么"><a href="#HTTPS一定是安全可靠的么" class="headerlink" title="HTTPS一定是安全可靠的么"></a>HTTPS一定是安全可靠的么</h2><h2 id="抓跑明文查看HTTPS信息的原理"><a href="#抓跑明文查看HTTPS信息的原理" class="headerlink" title="抓跑明文查看HTTPS信息的原理"></a>抓跑明文查看HTTPS信息的原理</h2><h2 id="1-1相比1-0"><a href="#1-1相比1-0" class="headerlink" title="1.1相比1.0"></a>1.1相比1.0</h2><blockquote>
+<p>优<br>长连接和管道化技术</p>
+</blockquote>
+<blockquote>
+<p>劣<br>头部未压缩，发送越多，延迟越多，浪费越多<br>响应队头阻塞<br>服务端只能被动响应<br>没有请求优先级</p>
+</blockquote>
+<h2 id="2相比1-1"><a href="#2相比1-1" class="headerlink" title="2相比1.1"></a>2相比1.1</h2><blockquote>
+<p>优<br>头部压缩<br>并发传输（应用层的对同阻塞）<br>服务器推送<br>二进制格式</p>
+</blockquote>
+<blockquote>
+<p>劣<br>TCP层依旧队头阻塞</p>
+</blockquote>
+<h2 id="3比2"><a href="#3比2" class="headerlink" title="3比2"></a>3比2</h2><blockquote>
+<p>UDP<br>无队头阻塞<br>连接更快<br>链接迁移</p>
+</blockquote>
+<blockquote>
+<p>普及极其慢，不知何时UDP逆袭TCP</p>
+</blockquote>
+<h2 id="HTTP1-1的性能优化方案-三个大方向"><a href="#HTTP1-1的性能优化方案-三个大方向" class="headerlink" title="HTTP1.1的性能优化方案 三个大方向"></a>HTTP1.1的性能优化方案 三个大方向</h2><h2 id="ECDHE加密算法"><a href="#ECDHE加密算法" class="headerlink" title="ECDHE加密算法"></a>ECDHE加密算法</h2><h2 id="HTTPS优化，硬件优化和软件优化都代价太大"><a href="#HTTPS优化，硬件优化和软件优化都代价太大" class="headerlink" title="HTTPS优化，硬件优化和软件优化都代价太大"></a>HTTPS优化，硬件优化和软件优化都代价太大</h2><h2 id="建议协议优化"><a href="#建议协议优化" class="headerlink" title="建议协议优化"></a>建议协议优化</h2><blockquote>
+<p>秘钥交换算法优化<br>ECDHE密钥交换算法<br>选择 x25519 曲线<br>选择密钥更短的对称加密算法</p>
+</blockquote>
+<blockquote>
+<p>TLS升级<br>TLS1.3消息合并。1RTT<br>仅支持安全的密码套件，防止中间人降级攻击</p>
+</blockquote>
+<h2 id="证书优化"><a href="#证书优化" class="headerlink" title="证书优化"></a>证书优化</h2><blockquote>
+<p>证书传输<br>椭圆曲线（ECDSA）证书，安全更高，密钥更短</p>
+</blockquote>
+<blockquote>
+<p>证书验证<br>OCSP Stapling服务器缓存</p>
+</blockquote>
+<h2 id="重用对称加密密钥"><a href="#重用对称加密密钥" class="headerlink" title="重用对称加密密钥"></a>重用对称加密密钥</h2><blockquote>
+<p>Session ID<br>服务器存，压力大<br>负载均衡，不一定中</p>
+</blockquote>
+<blockquote>
+<p>Session Ticket<br>客户端存<br>负载均衡，每台服务器都要是同样的加密密钥</p>
+</blockquote>
+<blockquote>
+<p>不具备前向安全性</p>
+</blockquote>
+<blockquote>
+<p>无法应对重用攻击，会被改变数据库数据<br>只能对安全的请求GET&#x2F;HEAD进行会话重用</p>
+</blockquote>
+<h2 id="头部压缩-静态表-动态表"><a href="#头部压缩-静态表-动态表" class="headerlink" title="头部压缩 静态表+动态表"></a>头部压缩 静态表+动态表</h2><h2 id="二进制帧"><a href="#二进制帧" class="headerlink" title="二进制帧"></a>二进制帧</h2><blockquote>
+<p>帧头<br>24位帧长度<br>8位帧类型<br>8位标志位<br>1位不用，31位流标识符</p>
+</blockquote>
+<blockquote>
+<p>帧数据<br>HPACK算法压缩过的头部或包体</p>
+</blockquote>
+<h2 id="并发传输"><a href="#并发传输" class="headerlink" title="并发传输"></a>并发传输</h2><blockquote>
+<p>Stream乱序<br>帧有序</p>
+</blockquote>
+<h2 id="服务器主动推送资源"><a href="#服务器主动推送资源" class="headerlink" title="服务器主动推送资源"></a>服务器主动推送资源</h2><blockquote>
+<p>请求html,推送css</p>
+</blockquote>
+<h2 id="3-无队头阻塞"><a href="#3-无队头阻塞" class="headerlink" title="3 无队头阻塞"></a>3 无队头阻塞</h2><h2 id="更快的连接建立"><a href="#更快的连接建立" class="headerlink" title="更快的连接建立"></a>更快的连接建立</h2><blockquote>
+<p>1和2 内核的传输层和openssh实现的表示层难以合并，3RLL<br>3 QUIC包含TLS1.3 1RLL</p>
+</blockquote>
+<h2 id="连接迁移"><a href="#连接迁移" class="headerlink" title="连接迁移"></a>连接迁移</h2><blockquote>
+<p>基于连接ID，而不是四元组</p>
+</blockquote>
+<h2 id="既然有有了HTTP-为什么还要有RPC"><a href="#既然有有了HTTP-为什么还要有RPC" class="headerlink" title="既然有有了HTTP,为什么还要有RPC"></a>既然有有了HTTP,为什么还要有RPC</h2><blockquote>
+<p>首先 RPC即远程过程调用不是一种协议，而是一种调用方式。在本地屏蔽网络细节调用远端的服务。如gRPC。它的底层不仅可以使TCP,还可以是UDP或HTTP。<br>TCP是70年代的协议，RPC是80年代的协议，HTTP是90年代的协议。前者应用于C&#x2F;S架构,后者应用于B&#x2F;S架构。逐渐融合后，HTTP占据主流，RPC主要应用于公司内部集群的服务端。<br>主要是因为相比HTTP&#x2F;1.1，RPC更加简洁化，定制化，不必考虑诸如字段或者重定向之类的浏览器行为。<br>但是2之后就比RPC更好了。2是2015年出现的，历史遗留问题罢了。</p>
+</blockquote>
+<h2 id="既然有有了HTTP-为什么还要有WebSocket"><a href="#既然有有了HTTP-为什么还要有WebSocket" class="headerlink" title="既然有有了HTTP,为什么还要有WebSocket"></a>既然有有了HTTP,为什么还要有WebSocket</h2><blockquote>
+<p>在 HTTP&#x2F;1.1里，只要客户端不问，服务端就不答。基于这样的特点，对于登录页面这样的简单场景，可以使用定时轮询或者长轮询的方式实现服务器推送(comet)的效果。</p>
+</blockquote>
+<blockquote>
+<p>对于客户端和服务端之间需要频繁交互的复杂场景，比如网页游戏，都可以考虑使用 WebSocket 协议。由HTTP协议升级而来，之后没关系，利用TCP的双全工。</p>
+</blockquote>
+<h2 id="TCP头格式有哪些"><a href="#TCP头格式有哪些" class="headerlink" title="TCP头格式有哪些"></a>TCP头格式有哪些</h2><blockquote>
+<p>16位源端口号，16位目标端口号<br>32序列号 计算机随机生成的数字作为初始值，没发送一次数据就递增，用来解决网络包乱序的问题<br>32位确认应答号 指下一次期望收到的序列号，指之前的包都已经收到，解决网络包丢包的问题<br>ACK 1 确认应答号有效 除SYN包都为1<br>FIN 1 结束时双方主机互发<br>RST TCP连接出现异常必须断开<br>SYN 1 希望建立连接</p>
+</blockquote>
+<h2 id="为什么需要-TCP-协议？-TCP-工作在哪一层？"><a href="#为什么需要-TCP-协议？-TCP-工作在哪一层？" class="headerlink" title="为什么需要 TCP 协议？ TCP 工作在哪一层？"></a>为什么需要 TCP 协议？ TCP 工作在哪一层？</h2><blockquote>
+<p>IP层不可靠，不保证网络包的到达，有序，完整，这需要TCP保证。</p>
+</blockquote>
+<blockquote>
+<p>传输层</p>
+</blockquote>
+<h2 id="什么是TCP"><a href="#什么是TCP" class="headerlink" title="什么是TCP"></a>什么是TCP</h2><blockquote>
+<p>面向连接的，可靠的，基于字节流的</p>
+</blockquote>
+<h2 id="什么是-TCP-连接？"><a href="#什么是-TCP-连接？" class="headerlink" title="什么是 TCP 连接？"></a>什么是 TCP 连接？</h2><blockquote>
+<p>用来维护可靠性和流量控制的某些状态信息的集合，包括Socket,序列号，窗口大小，这些信息被称为连接</p>
+</blockquote>
+<h2 id="如何唯一确定一个-TCP-连接呢？"><a href="#如何唯一确定一个-TCP-连接呢？" class="headerlink" title="如何唯一确定一个 TCP 连接呢？"></a>如何唯一确定一个 TCP 连接呢？</h2><blockquote>
+<p>四元组</p>
+</blockquote>
+<h2 id="有一个-IP-的服务端监听了一个端口，它的-TCP-的最大连接数是多少？"><a href="#有一个-IP-的服务端监听了一个端口，它的-TCP-的最大连接数是多少？" class="headerlink" title="有一个 IP 的服务端监听了一个端口，它的 TCP 的最大连接数是多少？"></a>有一个 IP 的服务端监听了一个端口，它的 TCP 的最大连接数是多少？</h2><blockquote>
+<p>理论 2^32+16<br>实际 TCP连接会占用文件描述符和内存</p>
+</blockquote>
+<h2 id="UDP-和-TCP-有什么区别呢"><a href="#UDP-和-TCP-有什么区别呢" class="headerlink" title="UDP 和 TCP 有什么区别呢"></a>UDP 和 TCP 有什么区别呢</h2><blockquote>
+<p>头部格式<br>源端口号，目标端口号，包长度，校验和</p>
+</blockquote>
+<blockquote>
+<p>通信前是否连接</p>
+</blockquote>
+<blockquote>
+<p>服务对象</p>
+</blockquote>
+<blockquote>
+<p>可靠性</p>
+</blockquote>
+<blockquote>
+<p>拥塞控制、流量控制<br>TCP保证数据传输的安全性<br>UDP即使网络再堵照样发，只受限网络带宽</p>
+</blockquote>
+<blockquote>
+<p>首部开销<br>TCP 20+选项<br>UDP 8</p>
+</blockquote>
+<blockquote>
+<p>传输方式<br>TCP 基于字节流，没有边界，但保证顺序和可靠<br>UDP一个个包发，优边界，但会乱序和丢包</p>
+</blockquote>
+<blockquote>
+<p>分片不同<br>TCP 基于MSS 无TCP,IP头部 目标主机能接受的最大分段大小 传输层分和组<br>UDP 基于MTU 全有 通信链路能接受的最大数据包大小 IP层分和组</p>
+</blockquote>
+<h2 id="TCP-和-UDP-应用场景"><a href="#TCP-和-UDP-应用场景" class="headerlink" title="TCP 和 UDP 应用场景"></a>TCP 和 UDP 应用场景</h2><blockquote>
+<p>FTP 文件传输</p>
+</blockquote>
+<blockquote>
+<p>DNS(包少)<br>音视屏<br>广播</p>
+</blockquote>
+<h2 id="为什么-UDP-头部没有「首部长度」字段，而-TCP-头部有「首部长度」字段呢？"><a href="#为什么-UDP-头部没有「首部长度」字段，而-TCP-头部有「首部长度」字段呢？" class="headerlink" title="为什么 UDP 头部没有「首部长度」字段，而 TCP 头部有「首部长度」字段呢？"></a>为什么 UDP 头部没有「首部长度」字段，而 TCP 头部有「首部长度」字段呢？</h2><blockquote>
+<p>选项</p>
+</blockquote>
+<h2 id="为什么-UDP-头部有「包长度」字段，而-TCP-头部则没有「包长度」字段呢？"><a href="#为什么-UDP-头部有「包长度」字段，而-TCP-头部则没有「包长度」字段呢？" class="headerlink" title="为什么 UDP 头部有「包长度」字段，而 TCP 头部则没有「包长度」字段呢？"></a>为什么 UDP 头部有「包长度」字段，而 TCP 头部则没有「包长度」字段呢？</h2><blockquote>
+<p>首先包长度可以通过IP层计算<br>1.保证4的整数，处理方便<br>2.历史遗留问题</p>
+</blockquote>
+<h2 id="三次握手过程-详细版"><a href="#三次握手过程-详细版" class="headerlink" title="三次握手过程(详细版)"></a>三次握手过程(详细版)</h2><h2 id="如何查看TCP状态"><a href="#如何查看TCP状态" class="headerlink" title="如何查看TCP状态"></a>如何查看TCP状态</h2><blockquote>
+<p>netstat -napt</p>
+</blockquote>
+<h2 id="为什么握手三次而不是四次"><a href="#为什么握手三次而不是四次" class="headerlink" title="为什么握手三次而不是四次"></a>为什么握手三次而不是四次</h2><blockquote>
+<p>四次应该就是把第二次握手的确认应答号分成两部分，可以但是没有必要</p>
+</blockquote>
+<h2 id="为什么握手三次而不是两次"><a href="#为什么握手三次而不是两次" class="headerlink" title="为什么握手三次而不是两次"></a>为什么握手三次而不是两次</h2><blockquote>
+<p>当网络阻塞，无法解决历史连接的初始化，浪费资源(服务端无法知道自己的ack报文是否收到，只能不断建立连接)三次握手不会建立连接，SYN_RCVD且有RET报文<br>无法同步双方序列号(你知道我知道)</p>
+</blockquote>
+<h2 id="为什么每次建立-TCP-连接时，初始化的序列号都要求不一样呢？"><a href="#为什么每次建立-TCP-连接时，初始化的序列号都要求不一样呢？" class="headerlink" title="为什么每次建立 TCP 连接时，初始化的序列号都要求不一样呢？"></a>为什么每次建立 TCP 连接时，初始化的序列号都要求不一样呢？</h2><blockquote>
+<p>防止历史报文被下一个相同四元组的连接接收<br>防止黑客伪造报文</p>
+</blockquote>
+<h2 id="初始序列号-ISN-是如何随机产生的？"><a href="#初始序列号-ISN-是如何随机产生的？" class="headerlink" title="初始序列号 ISN 是如何随机产生的？"></a>初始序列号 ISN 是如何随机产生的？</h2><blockquote>
+<p>时钟递增+四元组为参数的hash算法</p>
+</blockquote>
+<h2 id="既然-IP-层会分片，为什么-TCP-层还需要-MSS-呢？"><a href="#既然-IP-层会分片，为什么-TCP-层还需要-MSS-呢？" class="headerlink" title="既然 IP 层会分片，为什么 TCP 层还需要 MSS 呢？"></a>既然 IP 层会分片，为什么 TCP 层还需要 MSS 呢？</h2><blockquote>
+<p>防止一个TCP报文过大，在IP层超过MTU，IP层分片，分片传输给对方，此时如果分片丢失，对方IP层无法组装完整的TCP报文，无法交给TCP层，就无法相应ACK报文，然后发送方就会超市重传整个TCP报文。如果在TCP层根据MSS商量好提前分片就好多了</p>
+</blockquote>
+<h2 id="第一次握手丢失了，会发生什么？"><a href="#第一次握手丢失了，会发生什么？" class="headerlink" title="第一次握手丢失了，会发生什么？"></a>第一次握手丢失了，会发生什么？</h2><blockquote>
+<p>超时重传 等待时间翻倍</p>
+</blockquote>
+<h2 id="第二次握手丢失了，会发生什么？"><a href="#第二次握手丢失了，会发生什么？" class="headerlink" title="第二次握手丢失了，会发生什么？"></a>第二次握手丢失了，会发生什么？</h2><blockquote>
+<p>双方的第一次握手丢失</p>
+</blockquote>
+<h2 id="第三次握手丢失了，会发生什么？"><a href="#第三次握手丢失了，会发生什么？" class="headerlink" title="第三次握手丢失了，会发生什么？"></a>第三次握手丢失了，会发生什么？</h2><blockquote>
+<p>ACK 报文是不会有重传的，当 ACK 丢失了，就由对方重传对应的报文,知道超过最大重传次数，断开连接</p>
+</blockquote>
+<h2 id="什么是-SYN-攻击？"><a href="#什么是-SYN-攻击？" class="headerlink" title="什么是 SYN 攻击？"></a>什么是 SYN 攻击？</h2><blockquote>
+<p>通过大量的SYN 报文塞满半连接队列</p>
+</blockquote>
+<h2 id="如何避免-SYN-攻击？"><a href="#如何避免-SYN-攻击？" class="headerlink" title="如何避免 SYN 攻击？"></a>如何避免 SYN 攻击？</h2><blockquote>
+<p>增大 TCP 半连接队列</p>
+</blockquote>
+<blockquote>
+<p>减少 SYN+ACK 重传次数<br>快速断开连接</p>
+</blockquote>
+<blockquote>
+<p>当网卡接收数据包的速度大于内核处理的速度时，会有一个队列保存这些数据包,增大这个队列</p>
+</blockquote>
+<blockquote>
+<p>开启 syncookies 功能就可以在不使用 SYN 半连接队列的情况下成功建立连接，相当于绕过了 SYN半连接来建立连接。不丢弃，计算cookie值。</p>
+</blockquote>
+<h2 id="四次挥手过程"><a href="#四次挥手过程" class="headerlink" title="四次挥手过程"></a>四次挥手过程</h2><h2 id="为什么四次挥手"><a href="#为什么四次挥手" class="headerlink" title="为什么四次挥手"></a>为什么四次挥手</h2><blockquote>
+<p>服务端需要时间处理数据</p>
+</blockquote>
+<h2 id="第一次挥手丢失了，会发生什么？"><a href="#第一次挥手丢失了，会发生什么？" class="headerlink" title="第一次挥手丢失了，会发生什么？"></a>第一次挥手丢失了，会发生什么？</h2><blockquote>
+<p>超时重传</p>
+</blockquote>
+<h2 id="第二次挥手丢失了，会发生什么？"><a href="#第二次挥手丢失了，会发生什么？" class="headerlink" title="第二次挥手丢失了，会发生什么？"></a>第二次挥手丢失了，会发生什么？</h2><blockquote>
+<p>ACK报文不重传，客户端超时重传</p>
+</blockquote>
+<h2 id="第三次挥手丢失了，会发生什么？"><a href="#第三次挥手丢失了，会发生什么？" class="headerlink" title="第三次挥手丢失了，会发生什么？"></a>第三次挥手丢失了，会发生什么？</h2><blockquote>
+<p>客户端:close关闭，等待一段时间后没收到断开连接。shutdown一直等<br>服务端:超时重传</p>
+</blockquote>
+<h2 id="第四次挥手丢失了，会发生什么？"><a href="#第四次挥手丢失了，会发生什么？" class="headerlink" title="第四次挥手丢失了，会发生什么？"></a>第四次挥手丢失了，会发生什么？</h2><blockquote>
+<p>ACK报文不重传<br>服务端:超时重传，断开连接<br>客户端:等待2MSL，收到FIN重置</p>
+</blockquote>
+<h2 id="为什么-TIME-WAIT-等待的时间是-2MSL？"><a href="#为什么-TIME-WAIT-等待的时间是-2MSL？" class="headerlink" title="为什么 TIME_WAIT 等待的时间是 2MSL？"></a>为什么 TIME_WAIT 等待的时间是 2MSL？</h2><blockquote>
+<p>MSL 报文最大生存时间<br>TTL 报文最大经过路由数量</p>
+</blockquote>
+<blockquote>
+<p>允许ACK报文丢失一次，让服务端可以正常断开连接，RST报文断开不是一个好的方式</p>
+</blockquote>
+<blockquote>
+<p>让旧连接的数据包全部被丢弃，不会对下个相同四元组的新链接产生影响(序列号不是无限的，会循环)</p>
+</blockquote>
+<h2 id="TIME-WAIT-过多有什么危害？"><a href="#TIME-WAIT-过多有什么危害？" class="headerlink" title="TIME_WAIT 过多有什么危害？"></a>TIME_WAIT 过多有什么危害？</h2><blockquote>
+<p>主动断开连接的一方才会有TIME_WAIT<br>客户端:占用端口资源，一直等待</p>
+</blockquote>
+<blockquote>
+<p>服务端:占用系统资源</p>
+</blockquote>
+<h2 id="如何优化-TIME-WAIT？"><a href="#如何优化-TIME-WAIT？" class="headerlink" title="如何优化 TIME_WAIT？"></a>如何优化 TIME_WAIT？</h2><blockquote>
+<p>程序中使用 SO_LINGER</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">linger</span> so_linger;</span><br><span class="line">so_linger.l_onoff = <span class="number">0</span>;</span><br><span class="line">so_linger.l_linger = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">setsockopt</span>(s, SOL_SOCKET, SO_LINGER, &amp;so_linger,<span class="built_in">sizeof</span>(so_linger));</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>close直接发送RST，跳过TIME_WAIT</p>
+</blockquote>
+<blockquote>
+<p>如果服务端要避免过多的 TIME_WAIT 状态的连接，就永远不要主动断开连接，让客户端去断开，由分布在各处的客户端去承受 TIME_WAIT</p>
+</blockquote>
+<h2 id="服务器出现大量-TIME-WAIT-状态的原因有哪些？"><a href="#服务器出现大量-TIME-WAIT-状态的原因有哪些？" class="headerlink" title="服务器出现大量 TIME_WAIT 状态的原因有哪些？"></a>服务器出现大量 TIME_WAIT 状态的原因有哪些？</h2><blockquote>
+<p>客户端和服务端有一方关闭长连接</p>
+</blockquote>
+<blockquote>
+<p>长连接后客户端长时间不发送数据</p>
+</blockquote>
+<blockquote>
+<p>HTTP 长连接的请求数量达到上限</p>
+</blockquote>
+<h2 id="服务器出现大量-CLOSE-WAIT-状态的原因有哪些？"><a href="#服务器出现大量-CLOSE-WAIT-状态的原因有哪些？" class="headerlink" title="服务器出现大量 CLOSE_WAIT 状态的原因有哪些？"></a>服务器出现大量 CLOSE_WAIT 状态的原因有哪些？</h2><blockquote>
+<p>CLOSE_WAIT状态是「被动关闭方」才会有的状态,当服务端出现大量CLOSE_WAIT状态的连接的时候，说明服务端的程序没有调用close函数关闭连接。</p>
+</blockquote>
+<blockquote>
+<p>一般主要是代码问题</p>
+</blockquote>
+<h2 id="如果已经建立了连接，但是客户端突然出现故障了怎么办？"><a href="#如果已经建立了连接，但是客户端突然出现故障了怎么办？" class="headerlink" title="如果已经建立了连接，但是客户端突然出现故障了怎么办？"></a>如果已经建立了连接，但是客户端突然出现故障了怎么办？</h2><blockquote>
+<p>TCP保活机制，需要再代码中设置，时间太长<br>心跳机制，长时间误操作服务端主动断开<br>啥都没有就啥也不干</p>
+</blockquote>
+<h2 id="如果已经建立了连接，但是服务端的进程崩溃会发生什么？"><a href="#如果已经建立了连接，但是服务端的进程崩溃会发生什么？" class="headerlink" title="如果已经建立了连接，但是服务端的进程崩溃会发生什么？"></a>如果已经建立了连接，但是服务端的进程崩溃会发生什么？</h2><blockquote>
+<p>服务端主动断开连接，四次挥手</p>
+</blockquote>
+<blockquote>
+<p>进程崩溃，内核还在</p>
+</blockquote>
+<h2 id="TCP-连接，一端断电和进程崩溃有什么区别？"><a href="#TCP-连接，一端断电和进程崩溃有什么区别？" class="headerlink" title="TCP 连接，一端断电和进程崩溃有什么区别？"></a>TCP 连接，一端断电和进程崩溃有什么区别？</h2><blockquote>
+<p>进程崩溃<br>主机宕机另一端会发送数据<br>主机宕机另一端不会发送数据，开启keepalive机制<br>主机宕机另一端不会发送数据，没开启keepalive机制</p>
+</blockquote>
+<h2 id="重传机制之超时重传"><a href="#重传机制之超时重传" class="headerlink" title="重传机制之超时重传"></a>重传机制之超时重传</h2><blockquote>
+<p>RTO略大于RTT(动态变化)<br>超时等待周期较长</p>
+</blockquote>
+<h2 id="重传机制之快速重传"><a href="#重传机制之快速重传" class="headerlink" title="重传机制之快速重传"></a>重传机制之快速重传</h2><blockquote>
+<p>收到三次相同的ACK报文立即重传<br>无法解决到底是重传一个还是重传所有的问题</p>
+</blockquote>
+<h2 id="重传机制之基于快速重传的SACK方法"><a href="#重传机制之基于快速重传的SACK方法" class="headerlink" title="重传机制之基于快速重传的SACK方法"></a>重传机制之基于快速重传的SACK方法</h2><blockquote>
+<p>只重传丢失的数据</p>
+</blockquote>
+<p>##D-SACK方法</p>
+<blockquote>
+<p>告诉发送发哪些数据是重复的，并且是因为什么原因</p>
+</blockquote>
+<blockquote>
+<p>ACK报文丢失再传数据导致的数据重复，网络延迟导致旧数据在重传之后到达，数据在传输过程中被莫名复制</p>
+</blockquote>
+<p>##滑动窗口</p>
+<blockquote>
+<p>解决发送应答再发送效率低下的的问题<br>窗口大小由接受方决定</p>
+</blockquote>
+<h2 id="基于滑动窗口的流量控制"><a href="#基于滑动窗口的流量控制" class="headerlink" title="基于滑动窗口的流量控制"></a>基于滑动窗口的流量控制</h2><blockquote>
+<p>让「发送方」根据「接收方」的实际接收能力控制发送的数据量，避免发送方的数据填满接受方的缓存</p>
+</blockquote>
+<h2 id="缓冲区与滑动窗口"><a href="#缓冲区与滑动窗口" class="headerlink" title="缓冲区与滑动窗口"></a>缓冲区与滑动窗口</h2><blockquote>
+<p>减小缓冲区影响滑动窗口大小，但发送发此时不知道，发一个比缓冲区大的包被丢弃</p>
+</blockquote>
+<blockquote>
+<p>应该先收缩窗口，等待，再减小缓存</p>
+</blockquote>
+<h2 id="窗口关闭时，潜在的死锁现象"><a href="#窗口关闭时，潜在的死锁现象" class="headerlink" title="窗口关闭时，潜在的死锁现象"></a>窗口关闭时，潜在的死锁现象</h2><blockquote>
+<p>持续计时器，窗口探测报文，重复三次，依旧0，RET</p>
+</blockquote>
+<h2 id="糊涂窗口综合症条件"><a href="#糊涂窗口综合症条件" class="headerlink" title="糊涂窗口综合症条件"></a>糊涂窗口综合症条件</h2><blockquote>
+<p>接收方可以通告小窗口<br>而发送方可以发送小数据</p>
+</blockquote>
+<h2 id="糊涂窗口综合症解决"><a href="#糊涂窗口综合症解决" class="headerlink" title="糊涂窗口综合症解决"></a>糊涂窗口综合症解决</h2><blockquote>
+<p>窗口大小小于MSS或者缓冲区的一半就通告窗口大小0</p>
+</blockquote>
+<blockquote>
+<p>Nagle 算法<br>条件一：要等到窗口大小 &gt;&#x3D; MSS 并且 数据大小 &gt;&#x3D; MSS；<br>条件二：收到之前发送数据的 ack 回包；</p>
+</blockquote>
+<h2 id="基于拥塞窗口的拥塞控制"><a href="#基于拥塞窗口的拥塞控制" class="headerlink" title="基于拥塞窗口的拥塞控制"></a>基于拥塞窗口的拥塞控制</h2><blockquote>
+<p>避免发送方的数据塞满网络</p>
+</blockquote>
+<h2 id="拥塞窗口和发送窗口"><a href="#拥塞窗口和发送窗口" class="headerlink" title="拥塞窗口和发送窗口"></a>拥塞窗口和发送窗口</h2><blockquote>
+<p>swnd &#x3D; min(cwnd,rwnd)</p>
+</blockquote>
+<h2 id="那么怎么知道当前网络是否出现了拥塞呢"><a href="#那么怎么知道当前网络是否出现了拥塞呢" class="headerlink" title="那么怎么知道当前网络是否出现了拥塞呢"></a>那么怎么知道当前网络是否出现了拥塞呢</h2><blockquote>
+<p>没有收到ACK报文，发生了拥塞</p>
+</blockquote>
+<h2 id="慢启动-cwnd"><a href="#慢启动-cwnd" class="headerlink" title="慢启动 cwnd&lt;ssthresh"></a>慢启动 cwnd&lt;ssthresh</h2><h2 id="拥塞避免算法-cwnd-ssthresh"><a href="#拥塞避免算法-cwnd-ssthresh" class="headerlink" title="拥塞避免算法 cwnd&gt;&#x3D;ssthresh"></a>拥塞避免算法 cwnd&gt;&#x3D;ssthresh</h2><h2 id="发送的数据多了不可避免的会重传进入拥塞发生算法"><a href="#发送的数据多了不可避免的会重传进入拥塞发生算法" class="headerlink" title="发送的数据多了不可避免的会重传进入拥塞发生算法"></a>发送的数据多了不可避免的会重传进入拥塞发生算法</h2><blockquote>
+<p>超时重传<br>cwnd  &#x3D; 1<br>ssthresh &#x3D;ssthresh&#x2F;2</p>
+</blockquote>
+<blockquote>
+<p>快速重传<br>cwnd  &#x3D; cwnd&#x2F;2<br>ssthresh &#x3D;cwnd</p>
+</blockquote>
+<h2 id="快速重传拥塞之后的快速回复"><a href="#快速重传拥塞之后的快速回复" class="headerlink" title="快速重传拥塞之后的快速回复"></a>快速重传拥塞之后的快速回复</h2><blockquote>
+<p>cwnd  &#x3D; cwnd +3 收到的三个ACK包<br>之后每次收到一个+1，知道收到新数据ACK<br>cwnd &#x3D; ssthresh</p>
+</blockquote>
+<h2 id="TCP优化"><a href="#TCP优化" class="headerlink" title="TCP优化"></a>TCP优化</h2><ul>
+<li>减少SYN报文的重传次数</li>
+<li>减少SYN+ACK报文的重传次数</li>
+<li>调整半连接队列长度<ul>
+<li>如何确定此时半连接队列长度小了</li>
+<li>如何增大</li>
+<li>只有增大这一种方法么</li>
+</ul>
+</li>
+<li>调整全连接队列长度<ul>
+<li>查看全连接队列长度</li>
+<li>如何确定此时全连接队列长度小了</li>
+<li>如何增大</li>
+<li>在半连接队列中返回ACK报文时全连接队列满了</li>
+</ul>
+</li>
+<li>TCP Fast Open</li>
+<li>正常关闭的两种方式以及粗鲁关闭</li>
+<li>减少FIN报文的重传次数</li>
+<li>不同关闭方式的FIN_WAIT2状态</li>
+<li>TIME_WAIT状态优化之超过限制直接跳过</li>
+<li>TIME_WAIT状态优化之复用TIME_WAIT状态端口</li>
+<li>TIME_WAIT状态优化之快速回收</li>
+<li>四次挥手变三次挥手</li>
+<li>两边同时关闭的特殊情况</li>
+<li>带宽时延积</li>
+</ul>
+<h2 id="为什么说UDP面向报文"><a href="#为什么说UDP面向报文" class="headerlink" title="为什么说UDP面向报文"></a>为什么说UDP面向报文</h2><blockquote>
+<p>不分片，一个报文对应一个用户消息，自成边界</p>
+</blockquote>
+<h2 id="为什么说TCP面向字节流"><a href="#为什么说TCP面向字节流" class="headerlink" title="为什么说TCP面向字节流"></a>为什么说TCP面向字节流</h2><blockquote>
+<p>分片，一个报文不一定就是一个消息，需要分界</p>
+</blockquote>
+<h2 id="解决粘包"><a href="#解决粘包" class="headerlink" title="解决粘包"></a>解决粘包</h2><blockquote>
+<p>固定长度消息<br>不灵活很少用</p>
+</blockquote>
+<blockquote>
+<p>特殊字符作为边界<br>消息中包含记得转义</p>
+</blockquote>
+<blockquote>
+<p>自定义结构<br>头中包含体长度</p>
+</blockquote>
+<h2 id="为什么-TCP每次建立连接时，初始化序列号都要不一样呢？"><a href="#为什么-TCP每次建立连接时，初始化序列号都要不一样呢？" class="headerlink" title="为什么 TCP每次建立连接时，初始化序列号都要不一样呢？"></a>为什么 TCP每次建立连接时，初始化序列号都要不一样呢？</h2><blockquote>
+<p>不是序列号啊</p>
+</blockquote>
+<blockquote>
+<p>主要原因是为了防止历史报文被下一个相同四元组的连接接收。大概率，还是有可能</p>
+</blockquote>
+<blockquote>
+<p>时间戳的机制，完全避免了历史报文被接收的问题。</p>
+</blockquote>
+<h2 id="SYN-报文什么时候情况下会被丢弃？"><a href="#SYN-报文什么时候情况下会被丢弃？" class="headerlink" title="SYN 报文什么时候情况下会被丢弃？"></a>SYN 报文什么时候情况下会被丢弃？</h2><blockquote>
+<p>历史SYN报文</p>
+</blockquote>
+<blockquote>
+<p>在应用NAT(区域网访问互联网)的情况下，开启tcp_tw_recycle和时间戳，linux会进行只针对ip的PAWS检查，另一台主机连接，ip一样，时间戳不对，丢弃。</p>
+</blockquote>
+<blockquote>
+<p>半连接队伍或者全连接队伍满了</p>
+</blockquote>
+<h2 id="已建立连接的TCP，收到SYN会发生什么"><a href="#已建立连接的TCP，收到SYN会发生什么" class="headerlink" title="已建立连接的TCP，收到SYN会发生什么"></a>已建立连接的TCP，收到SYN会发生什么</h2><blockquote>
+<p>倘若这个SYN 报文的端口不一样，那么建议新连接。旧连接服务端发送数据，客户端回RET。不发送连接就等在哪。开启Keep alive超时断开。</p>
+</blockquote>
+<blockquote>
+<p>倘若这个SYN 报文端口一样，服务端回一个challeng ack,注意初始序列号是不一样的，客户端回RET，释放链接</p>
+</blockquote>
+<h2 id="伪造RET"><a href="#伪造RET" class="headerlink" title="伪造RET"></a>伪造RET</h2><blockquote>
+<p>要伪造一个能关闭 TCP 连接的 RST 报文，必须同时满足「四元组相同」和「序列号是对方期望的」这两个条件。</p>
+</blockquote>
+<h2 id="四次挥手中收到乱序的-FIN-包会如何处理？"><a href="#四次挥手中收到乱序的-FIN-包会如何处理？" class="headerlink" title="四次挥手中收到乱序的 FIN 包会如何处理？"></a>四次挥手中收到乱序的 FIN 包会如何处理？</h2><blockquote>
+<p>加入乱序队列，不会进入TIME_WAIT状态，等待网络延迟的数据包到达。检查乱序队列，发现合理的FIN 包，进入TIME_WAIT状态</p>
+</blockquote>
+<h2 id="在-TCP-正常挥手过程中，处于-TIME-WAIT-状态的连接，收到相同四元组的-SYN-后会发生什么？"><a href="#在-TCP-正常挥手过程中，处于-TIME-WAIT-状态的连接，收到相同四元组的-SYN-后会发生什么？" class="headerlink" title="在 TCP 正常挥手过程中，处于 TIME_WAIT 状态的连接，收到相同四元组的 SYN 后会发生什么？"></a>在 TCP 正常挥手过程中，处于 TIME_WAIT 状态的连接，收到相同四元组的 SYN 后会发生什么？</h2><blockquote>
+<p>如果客户端的 SYN 的「序列号」比服务端「期望下一个收到的序列号」要大，并且SYN 的「时间戳」比服务端「最后收到的报文的时间戳」要大。那么就会重用该四元组连接，跳过 2MSL 而转变为 SYN_RECV 状态，接着就能进行建立连接过程。</p>
+</blockquote>
+<blockquote>
+<p>如果客户端的 SYN 的「序列号」比服务端「期望下一个收到的序列号」要小，或者SYN 的「时间戳」比服务端「最后收到的报文的时间戳」要小。那么就会再回复一个第四次挥手的 ACK 报文，客户端收到后，发现并不是自己期望收到确认号，就回 RST 报文给服务端。</p>
+</blockquote>
+<h2 id="在-TIME-WAIT-状态，收到-RST-会断开连接吗？"><a href="#在-TIME-WAIT-状态，收到-RST-会断开连接吗？" class="headerlink" title="在 TIME_WAIT 状态，收到 RST 会断开连接吗？"></a>在 TIME_WAIT 状态，收到 RST 会断开连接吗？</h2><blockquote>
+<p>如果 net.ipv4.tcp_rfc1337 参数为 0，则提前结束 TIME_WAIT 状态，释放连接。</p>
+</blockquote>
+<blockquote>
+<p>如果 net.ipv4.tcp_rfc1337 参数为 1，则会丢掉该 RST 报文。</p>
+</blockquote>
+<blockquote>
+<p>一般来说默认断开</p>
+</blockquote>
+<h2 id="拔掉网线后，-原本的-TCP-连接还存在吗？"><a href="#拔掉网线后，-原本的-TCP-连接还存在吗？" class="headerlink" title="拔掉网线后， 原本的 TCP 连接还存在吗？"></a>拔掉网线后， 原本的 TCP 连接还存在吗？</h2><blockquote>
+<p>是存在的</p>
+</blockquote>
+<blockquote>
+<p>客户端拔掉网线后，并不会直接影响 TCP 连接状态。所以，拔掉网线后，TCP 连接是否还会存在，关键要看拔掉网线之后，有没有进行数据传输。</p>
+</blockquote>
+<blockquote>
+<p>没有数据传输</p>
+</blockquote>
+<blockquote>
+<p>如果双方都没有开启 TCP keepalive 机制，那么在客户端拔掉网线后，如果客户端一直不插回网线，那么客户端和服务端的 TCP 连接状态将会一直保持存在。</p>
+</blockquote>
+<blockquote>
+<p>如果双方都开启了 TCP keepalive 机制，那么在客户端拔掉网线后，如果客户端一直不插回网线，TCP keepalive 机制会探测到对方的 TCP 连接没有存活，于是就会断开 TCP 连接。而如果在 TCP 探测期间，客户端插回了网线，那么双方原本的 TCP 连接还是能正常存在。</p>
+</blockquote>
+<blockquote>
+<p>如果有数据传输</p>
+</blockquote>
+<blockquote>
+<p>在客户端拔掉网线后，如果服务端发送了数据报文，那么在服务端重传次数没有达到最大值之前，客户端就插回了网线，那么双方原本的 TCP 连接还是能正常存在，就好像什么事情都没有发生。</p>
+</blockquote>
+<blockquote>
+<p>在客户端拔掉网线后，如果服务端发送了数据报文，在客户端插回网线之前，服务端重传次数达到了最大值时，服务端就会断开 TCP 连接。等到客户端插回网线后，向服务端发送了数据，因为服务端已经断开了与客户端相同四元组的 TCP 连接，所以就会回 RST 报文，客户端收到后就会断开 TCP 连接。至此， 双方的 TCP 连接都断开了</p>
+</blockquote>
+<h2 id="tcp-tw-reuse-为什么默认是关闭的？"><a href="#tcp-tw-reuse-为什么默认是关闭的？" class="headerlink" title="tcp_tw_reuse 为什么默认是关闭的？"></a>tcp_tw_reuse 为什么默认是关闭的？</h2><blockquote>
+<p>复用相同四元组且TIME_WAIT状态超过1S的端口</p>
+</blockquote>
+<blockquote>
+<p>等于是变相的问TIME_WAIT状态时间过短会出现什么问题</p>
+</blockquote>
+<blockquote>
+<p>历史 RST 报文可能会终止后面相同四元组的连接，因为 PAWS 检查到即使 RST 是过期的，也不会丢弃。基本上只有在TIME_WAIT时间过短的情况下才有很小的可能会出现</p>
+</blockquote>
+<blockquote>
+<p>如果第四次挥手的 ACK 报文丢失了，有可能被动关闭连接的一方不能被正常的关闭<br>FIN包到达，回RET<br>challenge ACK包到达,回RET</p>
+</blockquote>
+<h2 id="HTTPS-中-TLS-和-TCP-能同时握手吗？"><a href="#HTTPS-中-TLS-和-TCP-能同时握手吗？" class="headerlink" title="HTTPS 中 TLS 和 TCP 能同时握手吗？"></a>HTTPS 中 TLS 和 TCP 能同时握手吗？</h2><blockquote>
+<p>客户端和服务端都开启了 TCP Fast Open 功能，且 TLS 版本是 1.3；</p>
+</blockquote>
+<blockquote>
+<p>客户端和服务端已经完成过一次通信；</p>
+</blockquote>
+<blockquote>
+<p>如果不是第一次通信，双方都开启 TCP Fast Open 功能，且 TLS 版本是 1.3，而且还是在进行会话恢复，就算是HTTP请求都可以一起做了</p>
+</blockquote>
+<h2 id="TCP-四次挥手，可以变成三次吗？"><a href="#TCP-四次挥手，可以变成三次吗？" class="headerlink" title="TCP 四次挥手，可以变成三次吗？"></a>TCP 四次挥手，可以变成三次吗？</h2><blockquote>
+<p>当然可以，只要中间没有数据要处理</p>
+</blockquote>
+<h2 id="TCP-序列号和确认号是如何变化的？"><a href="#TCP-序列号和确认号是如何变化的？" class="headerlink" title="TCP 序列号和确认号是如何变化的？"></a>TCP 序列号和确认号是如何变化的？</h2><blockquote>
+<p>公式一：序列号 &#x3D; 上一次发送的序列号 + len（数据长度）。特殊情况，如果上一次发送的报文是 SYN 报文或者 FIN 报文，则改为 上一次发送的序列号 + 1。</p>
+</blockquote>
+<blockquote>
+<p>公式二：确认号 &#x3D; 上一次收到的报文中的序列号 + len（数据长度）。特殊情况，如果收到的是 SYN 报文或者 FIN 报文，则改为上一次收到的报文中的序列号 + 1。</p>
+</blockquote>
+<h2 id="TCP-和-UDP-可以同时监听相同的端口吗？"><a href="#TCP-和-UDP-可以同时监听相同的端口吗？" class="headerlink" title="TCP 和 UDP 可以同时监听相同的端口吗？"></a>TCP 和 UDP 可以同时监听相同的端口吗？</h2><blockquote>
+<p>可以的，再传输层会有对应的模块进行处理</p>
+</blockquote>
+<h2 id="多个-TCP-服务进程可以绑定同一个端口吗"><a href="#多个-TCP-服务进程可以绑定同一个端口吗" class="headerlink" title="多个 TCP 服务进程可以绑定同一个端口吗"></a>多个 TCP 服务进程可以绑定同一个端口吗</h2><blockquote>
+<p>不可以，四元组相同，会报错Address already in use.</p>
+</blockquote>
+<h2 id="重启-TCP-服务进程时，为什么会有“Address-in-use”的报错信息？"><a href="#重启-TCP-服务进程时，为什么会有“Address-in-use”的报错信息？" class="headerlink" title="重启 TCP 服务进程时，为什么会有“Address in use”的报错信息？"></a>重启 TCP 服务进程时，为什么会有“Address in use”的报错信息？</h2><blockquote>
+<p>重启太快了，TIME_WAIT阶段还没有结束，等一会就可以了</p>
+</blockquote>
+<h2 id="重启-TCP-服务进程时，如何避免“Address-in-use”的报错信息？"><a href="#重启-TCP-服务进程时，如何避免“Address-in-use”的报错信息？" class="headerlink" title="重启 TCP 服务进程时，如何避免“Address in use”的报错信息？"></a>重启 TCP 服务进程时，如何避免“Address in use”的报错信息？</h2><blockquote>
+<p>socket 设置 SO_REUSEADDR 属性</p>
+</blockquote>
+<h2 id="客户端端口选择的流程总结"><a href="#客户端端口选择的流程总结" class="headerlink" title="客户端端口选择的流程总结"></a>客户端端口选择的流程总结</h2><blockquote>
+<p>connect()函数发生了什么<br>是否bind,是否有连接，是否相同四元组，是否开启tcp_tw_reuse,是否TIME_WAIT时间收否超过一秒</p>
+</blockquote>
+<h2 id="服务端没有-listen，客户端发起连接建立，会发生什么？"><a href="#服务端没有-listen，客户端发起连接建立，会发生什么？" class="headerlink" title="服务端没有 listen，客户端发起连接建立，会发生什么？"></a>服务端没有 listen，客户端发起连接建立，会发生什么？</h2><blockquote>
+<p>服务端回RET</p>
+</blockquote>
+<h2 id="不使用-listen-，可以建立-TCP-连接吗？"><a href="#不使用-listen-，可以建立-TCP-连接吗？" class="headerlink" title="不使用 listen ，可以建立 TCP 连接吗？"></a>不使用 listen ，可以建立 TCP 连接吗？</h2><blockquote>
+<p>客户端自连接或者不同客户端同时向对方建立连接。没有半&#x2F;全连接队列，但是有全局hash</p>
+</blockquote>
+<h2 id="没有-accept，能建立-TCP-连接吗？"><a href="#没有-accept，能建立-TCP-连接吗？" class="headerlink" title="没有 accept，能建立 TCP 连接吗？"></a>没有 accept，能建立 TCP 连接吗？</h2><blockquote>
+<p>可以，accept只是负责从全连接队伍中取出一个连接，具体的三次握手不需要它的参与</p>
+</blockquote>
+<h2 id="半连接队列、全连接队列是什么"><a href="#半连接队列、全连接队列是什么" class="headerlink" title="半连接队列、全连接队列是什么"></a>半连接队列、全连接队列是什么</h2><blockquote>
+<p>半连接队列<br>第一次握手后，处于SYN_RECV 状态的连接，是个hash表</p>
+</blockquote>
+<blockquote>
+<p>全连接队列<br>第三次握手后，处于ESTABLISHED状态的连接，是个链表</p>
+</blockquote>
+<h2 id="全连接队列满了会怎样"><a href="#全连接队列满了会怎样" class="headerlink" title="全连接队列满了会怎样"></a>全连接队列满了会怎样</h2><blockquote>
+<p>全连接队列满了，再来第三次握手也会丢弃，此时如果tcp_abort_on_overflow&#x3D;1，还会直接发RST给客户端。</p>
+</blockquote>
+<h2 id="半连接队列满了会怎样"><a href="#半连接队列满了会怎样" class="headerlink" title="半连接队列满了会怎样"></a>半连接队列满了会怎样</h2><blockquote>
+<p>半连接队列满了，可能是因为受到了SYN Flood攻击，可以设置tcp_syncookies，绕开半连接队列.但它不是万能的，cookie根据TCP头实时计算放在seq中，ACK报文又要解码计算，遇到ACK攻击，会因为cpu资源被耗尽无法响应</p>
+</blockquote>
+<h2 id="IP和MAC的差别"><a href="#IP和MAC的差别" class="headerlink" title="IP和MAC的差别"></a>IP和MAC的差别</h2><blockquote>
+<p>MAC 的作用则是实现「直连」的两个设备之间通信，传输过程中会变化。而 IP 则负责在「没有直连」的两个网络之间进行通信传输，传输过程中一般不会变化</p>
+</blockquote>
+<h2 id="什么是-A、B、C-类地址？"><a href="#什么是-A、B、C-类地址？" class="headerlink" title="什么是 A、B、C 类地址？"></a>什么是 A、B、C 类地址？</h2><blockquote>
+<p>0 7 24<br>10 14 16<br>110 21 8<br>网络下的主机数，2^主机号的位数-2<br>全1指网络下的所有主机，用于广播，本地广播可以，但是直接广播存在安全问题被路由器禁止<br>全0指这个网络</p>
+</blockquote>
+<h2 id="什么是-D、E-类地址？"><a href="#什么是-D、E-类地址？" class="headerlink" title="什么是 D、E 类地址？"></a>什么是 D、E 类地址？</h2><blockquote>
+<p>1110 4 24 用于多播<br>1111 4 24 预留使用</p>
+</blockquote>
+<h2 id="多播地址用于什么？"><a href="#多播地址用于什么？" class="headerlink" title="多播地址用于什么？"></a>多播地址用于什么？</h2><blockquote>
+<p>多播用于将包发送给特定组内的所有主机</p>
+</blockquote>
+<h2 id="IP-分类的缺点"><a href="#IP-分类的缺点" class="headerlink" title="IP 分类的缺点"></a>IP 分类的缺点</h2><blockquote>
+<p>同一网络下没有地址层次</p>
+</blockquote>
+<blockquote>
+<p>不能很好的与现实网络匹配,c类太少，b类太多</p>
+</blockquote>
+<h2 id="无分类地址-CIDR，子网掩码解决问题"><a href="#无分类地址-CIDR，子网掩码解决问题" class="headerlink" title="无分类地址 CIDR，子网掩码解决问题"></a>无分类地址 CIDR，子网掩码解决问题</h2><blockquote>
+<p>a.b.c.d&#x2F;x</p>
+</blockquote>
+<h2 id="环回地址是不会流向网络"><a href="#环回地址是不会流向网络" class="headerlink" title="环回地址是不会流向网络"></a>环回地址是不会流向网络</h2><h2 id="DNS域名解析的工作流程"><a href="#DNS域名解析的工作流程" class="headerlink" title="DNS域名解析的工作流程"></a>DNS域名解析的工作流程</h2><blockquote>
+<p>浏览器缓存，操作系统缓存，本地域名解析文件hosts,本地DNS服务器，根域名服务器，权威域名服务器，二级域名服务器</p>
+</blockquote>
+<h2 id="ARP广播请求-RARP向RARP服务器请求"><a href="#ARP广播请求-RARP向RARP服务器请求" class="headerlink" title="ARP广播请求 RARP向RARP服务器请求"></a>ARP广播请求 RARP向RARP服务器请求</h2><h2 id="DHCP动态主机配置协议"><a href="#DHCP动态主机配置协议" class="headerlink" title="DHCP动态主机配置协议"></a>DHCP动态主机配置协议</h2><blockquote>
+<p>DHCP 发现报文 UDP广播 全0 68 全1 67<br>DHCP 提供报文 IP地址及其租用期<br>DHCP 请求报文 选择一个<br>DHCP ACK 报文</p>
+</blockquote>
+<h2 id="DCHP中继代理解决广播不出区域网的问题"><a href="#DCHP中继代理解决广播不出区域网的问题" class="headerlink" title="DCHP中继代理解决广播不出区域网的问题"></a>DCHP中继代理解决广播不出区域网的问题</h2><h2 id="网络地址与端口转换-NAPT"><a href="#网络地址与端口转换-NAPT" class="headerlink" title="网络地址与端口转换 NAPT"></a>网络地址与端口转换 NAPT</h2><blockquote>
+<p>四元组确定一个连接</p>
+</blockquote>
+<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><blockquote>
+<p>确认 IP 包是否成功送达目标地址、报告发送过程中 IP 包被废弃的原因<br>8 回送请求<br>0 回送应答<br>3 目标不可达 1 主机不可达 2 协议不可达 3 端口不可达 4 需要分片缺设置不能分片<br>5 重定向 有更好的线路<br>11 超时</p>
+</blockquote>
+<h2 id="IGMP"><a href="#IGMP" class="headerlink" title="IGMP"></a>IGMP</h2><blockquote>
+<p>加入离开组播</p>
+</blockquote>
+<h2 id="ping使用查询报文类型，而traceroute则使用差错报文类型"><a href="#ping使用查询报文类型，而traceroute则使用差错报文类型" class="headerlink" title="ping使用查询报文类型，而traceroute则使用差错报文类型"></a>ping使用查询报文类型，而traceroute则使用差错报文类型</h2><blockquote>
+<p>发送UDP包，递增设置TTL，获取路线中每个路由的信息，收到11类型，设置不合理的端口，收到3-3类型。</p>
+</blockquote>
+<blockquote>
+<p>路径MTU发现<br>发送UDP包，收到3-4类型</p>
+</blockquote>
+<h2 id="回环地址-本机域名-localhost-0-0-0-0"><a href="#回环地址-本机域名-localhost-0-0-0-0" class="headerlink" title="回环地址 本机域名 localhost 0.0.0.0"></a>回环地址 本机域名 localhost 0.0.0.0</h2><blockquote>
+<p>127.0.0.1 是回环地址。localhost是域名，但默认等于 127.0.0.1。</p>
+</blockquote>
+<blockquote>
+<p>ping 回环地址和 ping 本机地址，是一样的，走的是lo0 “假网卡”，都会经过网络层和数据链路层等逻辑，最后在快要出网卡前狠狠拐了个弯， 将数据插入到一个链表后就软中断通知 ksoftirqd 来进行收数据的逻辑，压根就不出网络。所以断网了也能 ping 通回环地址。</p>
+</blockquote>
+<blockquote>
+<p>如果服务器 listen 的是 0.0.0.0，那么此时用127.0.0.1和本机地址都可以访问到服务。ping 是ping不通的</p>
+</blockquote>
+<h2 id="TCP-IP网络模型"><a href="#TCP-IP网络模型" class="headerlink" title="TCP&#x2F;IP网络模型"></a>TCP&#x2F;IP网络模型</h2><h2 id="键入网址到网页显示，期间发生了什么？"><a href="#键入网址到网页显示，期间发生了什么？" class="headerlink" title="键入网址到网页显示，期间发生了什么？"></a>键入网址到网页显示，期间发生了什么？</h2></div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>bbkkp</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://bbkkp.github.io/2024/08/31/Eight%20articles%20on%20computer%20networks.html/" title="计算机网络八股文">https://bbkkp.github.io/2024/08/31/Eight%20articles%20on%20computer%20networks.html/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2024/08/31/Red-black%20tree.html/" rel="prev" title="红黑树"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">红黑树</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2024/08/31/mysql%20stereotyped%20writing.html/" rel="next" title="mysql八股文"><span class="post-nav-text">mysql八股文</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2024 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> bbkkp</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v7.3.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.11</span></div><div class="live-time"><span>感谢陪伴</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2024-08-30T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div><div class="footer-custom-text"><a href="yourLink" rel="noopener" target="_blank">学就完了</a></div><div class="footer-support"><span>本站由</span><a class="footer-support-logo" href="https://www.rainyun.com/YeMeng_" target="blank" title="雨云"><img height="30" src="https://cn-sy1.rains3.com/yemenghexo/rainyunlogo.png" alt="雨云"></a><span>提供 对象存储 服务</span></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body></html>
